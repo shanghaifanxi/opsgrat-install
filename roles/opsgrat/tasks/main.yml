@@ -1,0 +1,126 @@
+---
+# This role will install opsgrat.
+
+
+- name: Create group.
+  group:
+    name: "{{ opsgrat_group }}"
+    state: "present"
+
+- name: Create user.
+  user:
+    name: "{{ opsgrat_user }}"
+    groups: "{{ opsgrat_group }}"
+    state: "present"
+
+- name: Create opsgrat dir.
+  file: path={{ item }} owner={{ opsgrat_user }} group={{ opsgrat_group }} state=directory
+  with_items:
+    - "{{ install_dir }}/opsgrat"
+    - "{{ log_dir }}"
+    - "{{ pid_dir }}"
+
+- name: Deploy opsgrat
+  unarchive:
+    src: "opsgrat.tar.gz"
+    dest: "{{ install_dir }}/opsgrat"
+    owner: "{{ opsgrat_user }}"
+    group: "{{ opsgrat_group }}"
+
+- name: Copy uwsgi.ini
+  template:
+    src: "uwsgi.ini.j2"
+    dest: "{{ install_dir }}/opsgrat/uwsgi.ini"
+    owner: "{{ opsgrat_user }}"
+    group: "{{ opsgrat_group }}"
+
+- name: Copy opsgrat configs.yml
+  template:
+    src: "configs.yml.j2"
+    dest: "{{ install_dir }}/opsgrat/opsgrat/configs.yml"
+    owner: "{{ opsgrat_user }}"
+    group: "{{ opsgrat_group }}"
+
+- name: Install dev packeges.
+  yum: name={{ item }} state=present
+  with_items:
+    - openldap
+    - openldap-devel
+    - sshpass
+    - git
+    - svn
+    - mariadb
+
+- name: Install virtualenv and PyMySQL.
+  pip:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - virtualenv
+    - PyMySQL
+
+- name: Install ansible 2.7
+  pip: name=ansible version=2.7 state=present
+
+- name: Create opsgrat database.
+  mysql_db:
+    login_user: "{{ mysql_opsgrat_user }}"
+    login_port: "{{ mysql_opsgrat_port }}"
+    login_host: "{{ mysql_opsgrat_host }}"
+    login_password: "{{ mysql_opsgrat_user_password }}"
+    encoding: utf8mb4
+    name: "{{ mysql_opsgrat_db }}"
+    state: present
+  register: opsgrat_db
+  when: role == "portal"
+
+- name: Import opsgrat tables.
+  mysql_db:
+    login_user: "{{ mysql_opsgrat_user }}"
+    login_port: "{{ mysql_opsgrat_port }}"
+    login_host: "{{ mysql_opsgrat_host }}"
+    login_password: "{{ mysql_opsgrat_user_password }}"
+    name: "{{ mysql_opsgrat_db }}"
+    state: import
+    target: "{{ install_dir }}/opsgrat/docs/opsgrat.sql"
+  when: opsgrat_db.changed
+
+- name: Install python packages.
+  pip:
+    requirements: "{{ install_dir }}/opsgrat/docs/requirements.txt"
+    virtualenv: "{{ install_dir }}/venv"
+    state: present
+    virtualenv_python: python3
+
+- name: Deploy web and worker supervisor config
+  template: src="{{ item }}.j2" dest="/etc/supervisor/conf.d/{{ item }}" owner=root group=root mode=0644
+  with_items:
+    - opsgrat-web.ini
+    - opsgratd.ini
+    - notification.ini
+  notify:
+  - restart supervisor
+
+- name: Deploy beat supervisor config.
+  template:
+    src: "opsgratbeat.ini.j2"
+    dest: "/etc/supervisor/conf.d/opsgratbeat.ini"
+    force: true
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+  - restart supervisor
+  when: role == "portal"
+
+- name: Delete nginx default.conf file name
+  file: 
+    path: /etc/nginx/conf.d/default.conf
+    state: absent
+  when: role == "portal"
+
+- name: Copy nginx config
+  template: src="opsgrat.conf.j2" dest="/etc/nginx/conf.d/opsgrat.conf" owner=root group=root mode=0644
+  notify:
+  - restart nginx
+  when: role == "portal"

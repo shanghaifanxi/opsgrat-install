@@ -1,0 +1,43 @@
+# 第二步，基本设置
+opsgrat_user: deploy
+opsgrat_group: deploy
+install_dir: /var/lib/opsgrat
+log_dir: /var/log/opsgrat
+pid_dir: /var/run/opsgrat
+
+opsgrat_uwsgi_port: 7500
+sso_uwsgi_port: 7501
+opsgrat_nginx_port: 8000
+sso_nginx_port: 8001
+
+# 第三步 设置MySQL
+mysql_host: 119.3.21.203
+mysql_port: 3306
+mysql_user: root
+mysql_user_password: root
+
+mysql_opsgrat_db: opsgrat
+mysql_opsgrat_host: "{{ mysql_host }}"
+mysql_opsgrat_port: "{{ mysql_port }}"
+mysql_opsgrat_user: "{{ mysql_user }}"
+mysql_opsgrat_user_password: "{{ mysql_user_password }}"
+
+mysql_sso_db: opsgrat_sso
+mysql_sso_host: "{{ mysql_host }}"
+mysql_sso_port: "{{ mysql_port }}"
+mysql_sso_user: "{{ mysql_user }}"
+mysql_sso_user_password: "{{ mysql_user_password }}"
+
+# 第四步 设置Redis
+redis_host: 127.0.0.1
+redis_port: 6379
+redis_passwd: 
+
+# 第五步 设置RabbitMQ
+rabbitmq_host: 127.0.0.1
+rabbitmq_port: 5672
+rabbitmq_user: guest
+rabbitmq_passwd: guest
+
+
+

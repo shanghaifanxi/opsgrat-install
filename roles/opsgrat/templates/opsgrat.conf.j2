@@ -1,0 +1,16 @@
+server {
+    listen {{ opsgrat_nginx_port }};
+
+    charset     utf-8;
+
+    client_max_body_size 75M;
+
+    location /static/ {
+        alias {{ install_dir }}/opsgrat/static/;
+    }
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass localhost:{{ opsgrat_uwsgi_port }};
+    }
+}

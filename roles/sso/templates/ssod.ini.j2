@@ -1,0 +1,8 @@
+[program:sso-job]
+user={{ opsgrat_user }}
+group={{ opsgrat_group }}
+stopasgroup=true
+command={{ install_dir }}/ssoenv/bin/celery -A sso worker --loglevel=INFO --time-limit=86400 -Ofair --concurrency=2 --logfile={{ log_dir }}/sso-worker.log --pidfile={{ pid_dir }}/sso-worker.pid
+directory={{ install_dir }}/sso
+autostart=true
+autorestart=true

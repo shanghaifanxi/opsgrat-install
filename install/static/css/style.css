@@ -1,0 +1,39 @@
+body{ background-color:#f6f6f6;  }
+.container{ width: 900px; height: 500px; background-color:#fff; position: absolute;left: 50%;top: 50%; margin-left: -450px;margin-top: -250px;}
+h1,h2{  line-height: 50px;margin-bottom: 20px; }
+h2{ color:#333; font-weight: normal; margin-bottom: 30px; }
+h2 img{ margin-right: 5px; }
+.form-horizontal .control-label{ text-align: left; }
+.progress-bar{background-color: #1888ff;}
+.carousel-control.left,.carousel-control.right{ background-image:  none;}
+.carousel-control{ font-size: 14px; color: #000; text-shadow: none; position: static; opacity: 1;}
+.carousel-indicators{ position: static; margin-left: 0; text-align: left;  }
+.carousel-indicators li{  width: auto; height: auto; display: block; text-indent:0;cursor: default; }
+.carousel-indicators .active{ width: auto; height: auto; }
+.carousel-inner{ width: auto; min-height:300px;}
+.side-menu h1{ font-size: 30px;  }
+.side-menu ol{ border-left: 1px dashed #a9d3ff; margin-left: 16px; }
+.side-menu li{ font-size: 14px; color: #333; line-height: 40px;margin-left:-16px; opacity: 0.6; }
+.side-menu li.active{ margin-left: -16px; }
+.side-menu li span{ color: #fff; width: 30px; height: 30px; line-height:30px; display: inline-block; text-align: center;border-radius: 50%; background-color:#1888ff; margin-right: 10px; }
+.side-menu li.active{ opacity: 1; }
+
+.main h2{ font-size: 24px;  }
+.main .content{ min-height: 330px; }
+.main .content .infor{margin-bottom: 20px; }
+.main .content td span.glyphicon-ok{ color: #2bc203; }
+.main .content td span.glyphicon-remove{ color: #ff0000; }
+.main .content table th{ color: #1888ff;}
+.main .content .table{ table-layout: fixed; }
+.main .content .tfooter{ margin-top: 40px;  }
+.main .content .red{ color: #ff0000; }
+.main .content .installing{}
+.main .content .success{font-size: 28px; text-align: center; }
+.main .content .success span{ font-size: 40px; color: #fff;  display: inline-block; width: 80px;height: 80px; line-height: 80px; text-align: center; border-radius: 50%;  background-color:#2bc203; margin-bottom: 15px;  }
+.main .content .scroll-box{height: 290px;overflow: auto;}
+
+
+
+.page{ text-align: right; }
+.btn-info,.btn-info:hover,.btn-info:focus ,.btn-info:active{color: #fff;background-color: #1888ff;border-color: #1888ff;}
+.btn-outline{ color: #1888ff; background-color: transparent; /*border: 1px solid #1888ff;*/ }

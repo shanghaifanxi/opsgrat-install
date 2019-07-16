@@ -1,0 +1,26 @@
+---
+# Install opsgrat
+
+- hosts: ssoserver
+
+  roles:
+  - nginx
+  - python3
+  - supervisor
+  - sso
+
+  tags:
+  - sso
+
+- hosts: opsgratserver
+
+  roles:
+  - nginx
+  - python3
+  - supervisor
+  - opsgrat
+
+  tags:
+  - opsgrat
+
+

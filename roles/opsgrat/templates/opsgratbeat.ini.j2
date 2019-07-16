@@ -1,0 +1,8 @@
+[program:opsgrat-beat]
+user={{ opsgrat_user }}
+group={{ opsgrat_group }}
+stopasgroup=true
+command={{ install_dir }}/venv/bin/celery -A opsgrat beat --schedule={{ pid_dir }}/opsgrat-beat-schedule -f {{ log_dir }}/opsgrat-beat.log -l INFO --pidfile={{ pid_dir }}/opsgrat-beat.pid
+directory={{ install_dir }}/opsgrat
+autostart=true
+autorestart=true

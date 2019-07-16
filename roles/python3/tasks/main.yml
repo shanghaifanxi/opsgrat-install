@@ -1,0 +1,21 @@
+---
+# This role will install python3.6.
+
+- name: Install Python3.6 Source.
+  yum: name={{ item }} state=present
+  with_items:
+   - epel-release
+   - https://centos7.iuscommunity.org/ius-release.rpm
+
+- name: Install Python3.6 and pip3.6.
+  yum: name={{ item }} state=present
+  with_items:
+   - python36u
+   - python36u-devel
+   - python36u-pip
+
+- name: Create python3 link.
+  file: src=/bin/python3.6 dest=/bin/python3 state=link
+
+- name: Create pip3 link.
+  file: src=/bin/pip3.6 dest=/bin/pip3 state=link

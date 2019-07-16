@@ -1,0 +1,11 @@
+[uwsgi]
+socket=:{{ sso_uwsgi_port }}
+# the base directory (full path)
+chdir = {{ install_dir }}/sso
+# Django s wsgi file
+module = sso.wsgi
+# master
+master = true
+# maximum number of worker processes
+processes = 4
+# ... with appropriate permissions - may be needed

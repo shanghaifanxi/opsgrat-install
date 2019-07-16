@@ -1,0 +1,104 @@
+---
+# This role will install sso.
+
+
+- name: Create group.
+  group:
+    name: "{{ opsgrat_group }}"
+    state: "present"
+
+- name: Create user.
+  user:
+    name: "{{ opsgrat_user }}"
+    groups: "{{ opsgrat_group }}"
+    state: "present"
+
+- name: Create opsgrat sso dir.
+  file: path={{ item }} owner={{ opsgrat_user }} group={{ opsgrat_group }} state=directory
+  with_items:
+    - "{{ install_dir }}/sso"
+    - "{{ log_dir }}"
+    - "{{ pid_dir }}"
+
+- name: Deploy sso
+  unarchive:
+    src: "sso.tar.gz"
+    dest: "{{ install_dir }}/sso"
+    owner: "{{ opsgrat_user }}"
+    group: "{{ opsgrat_group }}"
+
+- name: Copy uwsgi.ini
+  template:
+    src: "uwsgi.ini.j2"
+    dest: "{{ install_dir }}/sso/uwsgi.ini"
+    owner: "{{ opsgrat_user }}"
+    group: "{{ opsgrat_group }}"
+
+- name: Copy sso configs.yml
+  template:
+    src: "configs.yml.j2"
+    dest: "{{ install_dir }}/sso/sso/configs.yml"
+    owner: "{{ opsgrat_user }}"
+    group: "{{ opsgrat_group }}"
+
+- name: Install dev packeges.
+  yum: name={{ item }} state=present
+  with_items:
+    - openldap
+    - openldap-devel
+    - mariadb
+
+- name: Install virtualenv and PyMySQL.
+  pip:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - virtualenv
+    - PyMySQL
+
+- name: Create sso database.
+  mysql_db:
+    login_user: "{{ mysql_sso_user }}"
+    login_port: "{{ mysql_sso_port }}"
+    login_host: "{{ mysql_sso_host }}"
+    login_password: "{{ mysql_sso_user_password }}"
+    encoding: utf8mb4
+    name: "{{ mysql_sso_db }}"
+    state: present
+  register: sso_db
+
+- name: Import sso tables.
+  mysql_db:
+    login_user: "{{ mysql_sso_user }}"
+    login_port: "{{ mysql_sso_port }}"
+    login_host: "{{ mysql_sso_host }}"
+    login_password: "{{ mysql_sso_user_password }}"
+    name: "{{ mysql_sso_db }}"
+    state: import
+    target: "{{ install_dir }}/sso/docs/sso.sql"
+  when: sso_db.changed
+
+- name: Install python packages.
+  pip:
+    requirements: "{{ install_dir }}/sso/docs/requirements.txt"
+    virtualenv: "{{ install_dir }}/ssoenv"
+    state: present
+    virtualenv_python: python3
+
+- name: Deploy web and worker supervisor config
+  template: src="{{ item }}.j2" dest="/etc/supervisor/conf.d/{{ item }}" owner=root group=root mode=0644
+  with_items:
+    - sso-web.ini
+    - ssod.ini
+  notify:
+  - restart supervisor
+
+- name: Delete nginx default.conf file name
+  file: 
+    path: /etc/nginx/conf.d/default.conf
+    state: absent
+
+- name: Copy nginx config
+  template: src="sso.conf.j2" dest="/etc/nginx/conf.d/sso.conf" owner=root group=root mode=0644
+  notify:
+  - restart nginx

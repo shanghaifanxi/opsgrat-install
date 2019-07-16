@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html style="overflow: hidden; height: 100%;" lang="zh-CN">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpsGrat安装</title>
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<link href="/static/css/bootstrap.css" rel="stylesheet">
+<link href="/static/css/style.css" rel="stylesheet">
+
+<script src="/static/js/jquery-2.1.1.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <!-- 轮播 -->
+  <div id="myCarousel" class="carousel slide">
+    <div class="pull-left side-menu col-xs-4">
+      <h1>OpsGrat安装</h1>
+      <!-- 轮播（Carousel）指标 data-slide-to="0"-->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" class="active"><span>1</span>检查环境配置</li>
+        <li data-target="#myCarousel" ><span>2</span>设置用户信息</li>
+        <li data-target="#myCarousel" ><span>3</span>设置MySQL</li>
+        <li data-target="#myCarousel" ><span>4</span>设置redis</li>
+        <li data-target="#myCarousel" ><span>5</span>设置rabbit</li>
+        <li data-target="#myCarousel" ><span>6</span>安装中</li>
+        <li data-target="#myCarousel" ><span class="glyphicon glyphicon-ok"></span>安装完成</li>
+      </ol>
+    </div>
+    <div class="main col-xs-8">
+      <!-- 轮播（Carousel）项目 -->
+      <div class="carousel-inner" data-wrap="false">
+        <div class="item active">
+          <h2><img src="/static/images/arrow.png" /> 检查环境配置</h2>
+          <div class="content">
+            <table class="table">
+              <tr><th width="100">操作系统</th><th width="100">版本</th><th width="50">状态</th></tr>
+              <tr><td>python</td><td></td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
+              <tr><td>ansible</td><td></td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
+              <tr><td>pip</td><td></td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
+              <tr><td>sshpass</td><td></td><td><span class="glyphicon glyphicon-remove"></span></td></tr>
+              <tr><td>mysql客户端</td><td></td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
+            </table>
+            <p class="tfooter">是否尝试修复（安装)
+              <label class="radio-inline" style="margin-left:20px; ">
+                <input type="radio" name="optionsRadiosinline" id="optionsRadios3" value="option1" checked> YES
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="optionsRadiosinline" id="optionsRadios4"  value="option2"> NO
+              </label>
+
+            </p>
+          </div>
+        </div>
+        <div class="item">
+          <h2><img src="/static/images/arrow.png" />设置用户信息</h2>
+          <div class="content">
+            <p class="infor">请填写以下mysql的服务的地址、用户、密码的信息</p>
+            <form class="form-horizontal" role="form">
+              <div class="form-group">
+                <label for="lastname" class="col-sm-4 control-label"><span class="red">*</span>mysql的服务的地址</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="col-sm-4 control-label"><span class="red">*</span>mysql的用户名</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="col-sm-4 control-label"><span class="red">*</span>mysql的密码</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="item">
+          <h2><img src="/static/images/arrow.png" />设置mysql</h2>
+          <div class="content">
+            <p class="infor">请填写以下mysql的服务的地址、用户、密码的信息</p>
+            <form class="form-horizontal" role="form">
+              <div class="form-group">
+                <label for="lastname" class="col-sm-4 control-label"><span class="red">*</span>mysql的服务的地址</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="col-sm-4 control-label"><span class="red">*</span>mysql的用户名</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="col-sm-4 control-label"><span class="red">*</span>mysql的密码</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="item">
+          <h2><img src="/static/images/arrow.png" />设置redis</h2>
+          <div class="content">
+            <p class="infor">请填写以下mysql的服务的地址、用户、密码的信息</p>
+            <form class="form-horizontal" role="form">
+              <div class="form-group">
+                <label for="lastname" class="col-sm-4 control-label"><span class="red">*</span>mysql的服务的地址</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="col-sm-4 control-label"><span class="red">*</span>mysql的用户名</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="col-sm-4 control-label"><span class="red">*</span>mysql的密码</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="item">
+          <h2><img src="/static/images/arrow.png" />设置rabbit</h2>
+          <div class="content">
+            <p class="infor">请填写以下mysql的服务的地址、用户、密码的信息</p>
+            <form class="form-horizontal" role="form">
+              <div class="form-group">
+                <label for="lastname" class="col-sm-4 control-label"><span class="red">*</span>mysql的服务的地址</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="col-sm-4 control-label"><span class="red">*</span>mysql的用户名</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="col-sm-4 control-label"><span class="red">*</span>mysql的密码</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="item">
+          <h2><img src="/static/images/arrow.png" />安装</h2>
+          <div class="content">
+            <div class="installing">
+              <p>正在安装...</p>
+              <div class="progress">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                      aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
+                      <span class="sr-only">40% 完成</span>
+                  </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+         <div class="item">
+          <h2><img src="../images/arrow.png" />安装完成</h2>
+          <div class="content">
+            <div class="success">
+              <span class="glyphicon glyphicon-ok"></span>
+              <p>安装成功</p>
+              <a href="#" class="btn btn-info">开始使用OpsGrat</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="page">
+        <a type="button" class="btn btn-info btn-outline" id=“cancel” href="#">取消</a>
+        <!-- 轮播（Carousel）导航 -->
+        <a class="left carousel-control btn btn-info btn-outline" href="#myCarousel" role="button" data-slide="prev">
+          上一步
+        </a>
+        <a class="right carousel-control btn btn-info" href="#myCarousel" role="button" data-slide="next">
+          下一步
+        </a>
+        <!-- 当安装完成 -->
+        <a class="btn btn-info" role="button" style="display: none;">关闭</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+  $('#myCarousel').carousel({
+    pause: true,
+    interval: false, //设置不自动播放
+    wrap: false, //设置不循环播放
+  });
+   //h获取当前的索引
+  $('#myCarousel').on('slide.bs.carousel', function (event) {
+    var $hoder = $('#myCarousel').find('.item'),
+        $items = $(event.relatedTarget);
+    //getIndex就是轮播到当前位置的索引
+    var getIndex= $hoder.index($items);
+
+
+  });
+});
+</script>
+</body>
+</html>

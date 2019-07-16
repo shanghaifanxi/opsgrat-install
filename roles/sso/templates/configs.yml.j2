@@ -1,0 +1,27 @@
+# sso db
+DB_NAME: {{ mysql_sso_db }}
+DB_USER: {{ mysql_sso_user }}
+DB_PASSWORD: {{ mysql_sso_user_password }}
+DB_HOST: {{ mysql_sso_host }}
+DB_PORT: {{ mysql_sso_port }}
+
+
+REDIS:
+  HOST: {{ redis_host }}
+  PORT: {{ redis_port }}
+  PASSWORD: {{ redis_passwd }}
+
+
+RABBIT_MQ:
+  HOST: {{ rabbitmq_host }}
+  PORT: {{ rabbitmq_port }}
+  USER: {{ rabbitmq_user }}
+  PASSWORD: {{ rabbitmq_passwd }}
+
+# 系统名称和子系统名称对应
+SYSTEM_NAME: SSO
+
+# 日志目录
+LOG: {{ log_dir }}
+
+DEBUG: False

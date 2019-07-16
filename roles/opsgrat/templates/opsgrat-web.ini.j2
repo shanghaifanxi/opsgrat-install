@@ -1,0 +1,7 @@
+[program:uwsgi]
+user={{ opsgrat_user }}
+group={{ opsgrat_group }}
+command={{ install_dir }}/venv/bin/uwsgi --ini {{ install_dir }}/opsgrat/uwsgi.ini
+stopsignal=QUIT
+autostart=true
+autorestart=true

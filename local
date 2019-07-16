@@ -1,0 +1,5 @@
+[opsgratserver]
+localhost ansible_connection=local role=portal 
+
+[ssoserver]
+localhost ansible_connection=local

@@ -1,0 +1,6 @@
+[program:sso-uwsgi]
+user={{ opsgrat_user }}
+command={{ install_dir }}/ssoenv/bin/uwsgi --ini {{ install_dir }}/sso/uwsgi.ini
+stopsignal=QUIT
+autostart=true
+autorestart=true
