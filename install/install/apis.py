@@ -9,7 +9,6 @@ from rest_framework.permissions import AllowAny
 
 
 
-
 @transaction.atomic()
 @api_view(['POST'])
 @permission_classes((AllowAny,))
