@@ -43,7 +43,7 @@ def setup(request):
 
     data = ['opsgrat_user:' + ' ' + opsgrat_user, 'opsgrat_group:' + ' ' + opsgrat_group, 'install_dir:' + ' ' + install_dir, 'log_dir:' + ' ' + log_dir, 'pid_dir:' + ' ' + pid_dir + '\n',
             'mysql_host:' + ' ' + mysql_host, 'mysql_port:' + ' ' + mysql_port, 'mysql_user:' + ' ' + mysql_user, 'mysql_user_password:' + ' ' + mysql_user_password, 'mysql_opsgrat_db:' + ' ' + mysql_opsgrat_db, 'mysql_sso_db:' + ' ' + mysql_sso_db + '\n',
-            'opsgrat_uwsgi_port:' + ' ' + opsgrat_uwsgi_port, 'opsgrat_nginx_port:' + ' ' + opsgrat_nginx_port, 'sso_nginx_port:' + ' ' + sso_nginx_port, 'sso_uwsgi_port:' + ' ' + sso_uwsgi_port + '\n'
+            'opsgrat_uwsgi_port:' + ' ' + opsgrat_uwsgi_port, 'opsgrat_nginx_port:' + ' ' + opsgrat_nginx_port, 'sso_nginx_port:' + ' ' + sso_nginx_port, 'sso_uwsgi_port:' + ' ' + sso_uwsgi_port + '\n',
             'redis_host:' + ' ' + redis_host, 'redis_port:' + ' ' + redis_port, 'redis_passwd:' + ' ' + redis_passwd + '\n',
             'rabbitmq_host:' + ' ' + rabbitmq_host, 'rabbitmq_port:' + ' '+ rabbitmq_port, 'rabbitmq_user:' + ' ' + rabbitmq_user, 'rabbitmq_passwd:' + ' ' + rabbitmq_passwd
             ]

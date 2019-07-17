@@ -6,11 +6,11 @@ urlpatterns = [
 
     url('check/', apis.check, name='api_check'),
 
-    url('setupAnsible/', apis.setupAnsible, name='api_setup_ansible'),
+    url('setup/ansible/', apis.setupAnsible, name='api_setup_ansible'),
 
-    url('setupPip/', apis.setupPip, name='api_setup_pip'),
+    url('setup/pip/', apis.setupPip, name='api_setup_pip'),
 
-    url('setupSshPass/', apis.setupSshPass, name='api_setup_sshpass'),
+    url('setup/sshpass/', apis.setupSshPass, name='api_setup_sshpass'),
 
-    url('stopPid/', apis.stopPid, name='api_stop_pid'),
+    url('stop/pid/', apis.stopPid, name='api_stop_pid'),
     ]
