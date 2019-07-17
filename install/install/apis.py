@@ -10,7 +10,7 @@ import yaml,re
 
 
 @transaction.atomic()
-@api_view(['GET'])
+@api_view(['POST'])
 def setup(request):
 
     opsgrat_user = request.POST.get('opsgrat_user')
@@ -113,10 +113,6 @@ def check(request):
     if msg == False and os.path.exists(filePathCheck):
         os.remove(filePathCheck)
 
-    """
-    目前获取日志情况
-    
-    """
     pattern = re.compile(r'(?<=failed=)\d+\.?\d*')
     check_logs = pattern.findall(filePathLog)
     if msg == False and check_logs > 0:

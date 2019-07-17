@@ -485,7 +485,7 @@ $(function(){
                           params[v.name] = v.value
                       });
                       $(form).ajaxSubmit({
-                          type:"get",
+                          type:"post",
                           data:params,
                           url:"{% url 'api_setup' %}?format=json",
                           success: function(data){
@@ -689,4 +689,5 @@ $("#stopButton").on("click", function (e) {
 </script>
 </body>
 </html>
+
 
