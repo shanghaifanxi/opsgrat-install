@@ -6,8 +6,8 @@ import os,yaml,re
 from django.http import HttpResponseRedirect
 
 
-def SetupIndex(request):
-    return HttpResponseRedirect('/setup/')
+# def SetupIndex(request):
+#     return HttpResponseRedirect('/setup/')
 
 
 class SetupView(TemplateView):

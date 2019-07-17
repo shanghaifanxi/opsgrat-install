@@ -183,19 +183,19 @@
               <div class="form-group">
                 <label for="opsgrat_uwsgi_port" class="col-sm-4 control-label" style="text-indent: 10px"><span class="red">*</span>OpsGrat_Web端口：</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" id="opsgrat_uwsgi_port" name="opsgrat_uwsgi_port" placeholder="请输入OpsGrat_Web端口" value="{{ file.opsgrat_uwsgi_port }}">
+                  <input type="text" class="form-control" id="opsgrat_uwsgi_port" name="opsgrat_uwsgi_port" onkeyup="var reg = /^[1-9]+[0-9]*/;if(!reg.test(this.value)) {this.value='';placeholder = '只能输入大于0的数字'}" placeholder="请输入OpsGrat_Web端口" value="{{ file.opsgrat_uwsgi_port }}">
                 </div>
               </div>
               <div class="form-group">
                 <label for="opsgrat_nginx_port" class="col-sm-4 control-label" style="text-indent: 1px"><span class="red">*</span>OpsGrat_Nginx端口：</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" id="opsgrat_nginx_port" name="opsgrat_nginx_port" placeholder="请输入OpsGrat_Nginx端口" value="{{ file.opsgrat_nginx_port }}">
+                  <input type="text" class="form-control" id="opsgrat_nginx_port" name="opsgrat_nginx_port" onkeyup="var reg = /^[1-9]+[0-9]*/;if(!reg.test(this.value)) {this.value='';placeholder = '只能输入大于0的数字'}" placeholder="请输入OpsGrat_Nginx端口" value="{{ file.opsgrat_nginx_port }}">
                 </div>
               </div>
               <div class="form-group">
                 <label for="sso_uwsgi_port" class="col-sm-4 control-label" style="text-indent: 43px">SSO_Web端口：</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" id="sso_uwsgi_port" name="sso_uwsgi_port" placeholder="请输入SSO_Web端口" value="{{ file.sso_uwsgi_port }}">
+                  <input type="text" class="form-control" id="sso_uwsgi_port" name="sso_uwsgi_port" onkeyup="var reg = /^[1-9]+[0-9]*/;if(!reg.test(this.value)) {this.value='';placeholder = '只能输入大于0的数字'}" placeholder="请输入SSO_Web端口" value="{{ file.sso_uwsgi_port }}">
 
                 </div>
               </div>
@@ -203,7 +203,7 @@
                 <label for="sso_nginx_port" class="col-sm-4 control-label" style="text-indent: 34px">SSO_Nginx端口：</label>
                 <div class="col-sm-8">
 
-                 <input type="text" class="form-control" id="sso_nginx_port" name="sso_nginx_port" placeholder="请输入SSO_Nginx端口" value="{{ file.sso_nginx_port }}">
+                 <input type="text" class="form-control" id="sso_nginx_port" name="sso_nginx_port" onkeyup="var reg = /^[1-9]+[0-9]*/;if(!reg.test(this.value)) {this.value='';placeholder = '只能输入大于0的数字'}" placeholder="请输入SSO_Nginx端口" value="{{ file.sso_nginx_port }}">
 
                 </div>
               </div>
@@ -548,14 +548,14 @@ function use(port) {
 }
 
 
-$("#optionsRadios4").on('change', function (e) {
+{#$("#optionsRadios4").on('change', function (e) {#}
     {#$("#SubmitButton").attr('class','right carousel-control btn btn-info disabled')#}
-});
-
-$("#optionsRadios3").on('change', function (e) {
-    $("#SubmitButton").attr('class','right carousel-control btn btn-info')
-});
-
+{#});#}
+{##}
+{#$("#optionsRadios3").on('change', function (e) {#}
+{#    $("#SubmitButton").attr('class','right carousel-control btn btn-info')#}
+{#});#}
+{##}
 
 
 $("#prevButton").on("click", function (e) {
@@ -582,7 +582,7 @@ $("#reTryButton").on("click", function (e) {
                    success: function(data){
                        $.ajax({
                             url:"{% url 'api_check' %}?format=json",
-                       })
+                       });
                        getScriptResult(true);
                        interval_id = setInterval("getScriptResult(false)", 2*1000);
 
