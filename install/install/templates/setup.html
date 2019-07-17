@@ -354,7 +354,9 @@ function getScriptResult(isInit) {
             var check_log = web_check_log.replace('\n', '<br/>');
             var html_check_log = '<i id="spinner" class="fa fa-spinner fa-spin">' + check_log + '</i>';
             $("#reTryButton").show();
+            $("#prevButton").show();
              $("#stopButton").hide();
+             $("#log").html(html_check_log);
              window.clearInterval(interval_id);
 
         }else {
