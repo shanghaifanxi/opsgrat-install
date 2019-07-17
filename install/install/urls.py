@@ -20,7 +20,7 @@ urlpatterns = [
 
     url(r'^setup/', views.SetupView.as_view(), name="setup_view"),
 
-    # url(r'^log/', views.LogView.as_view(), name="log_view"),
+    url(r'', views.SetupIndex, name="index"),
 
     url(r'^api/setup/', include('install.urls_api'))
 ]

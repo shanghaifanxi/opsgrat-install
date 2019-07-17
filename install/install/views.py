@@ -2,7 +2,12 @@
 from django.views.generic import TemplateView
 from whichcraft import which
 from install import settings
-import os,yaml
+import os,yaml,re
+from django.http import HttpResponseRedirect
+
+
+def SetupIndex(request):
+    return HttpResponseRedirect('/setup/')
 
 
 class SetupView(TemplateView):
@@ -33,10 +38,10 @@ class SetupView(TemplateView):
         else:
             context['nosshpass'] = None
 
-        if which('mysql') != '':
-            context['mysql'] = which('mysql')
-        else:
-            context['nomysql'] = None
+        # if which('mysql') != '':
+        #     context['mysql'] = which('mysql')
+        # else:
+        #     context['nomysql'] = None
 
         name = "var.yaml"
         curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))
@@ -45,5 +50,4 @@ class SetupView(TemplateView):
             with open(path ,'r') as f:
                 file = yaml.load(f)
                 context['file'] = file
-
         return context

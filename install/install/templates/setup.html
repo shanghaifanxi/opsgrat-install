@@ -9,7 +9,7 @@
 <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
 <link href="/static/css/bootstrap.css" rel="stylesheet">
 <link href="/static/css/bootstrapValidator.css" rel="stylesheet">
-<link href="/static/css/style.css" rel="stylesheet">
+<link href="/static/css/styleWeb.css" rel="stylesheet">
 
 <script src="/static/js/jquery-2.1.1.js"></script>
 <script src="/static/js/jquery.form.js"></script>
@@ -26,11 +26,12 @@
       <!-- 轮播（Carousel）指标 data-slide-to="0"-->
       <ol class="carousel-indicators">
         <li data-target="#myCarousel" class="active"><span>1</span>检查环境配置</li>
-        <li data-target="#myCarousel" ><span>2</span>设置用户信息</li>
+        <li data-target="#myCarousel" ><span>2</span>设置基本信息</li>
         <li data-target="#myCarousel" ><span>3</span>设置MySQL</li>
-        <li data-target="#myCarousel" ><span>4</span>设置Redis</li>
-        <li data-target="#myCarousel" ><span>5</span>设置Rabbit</li>
-          <li data-target="#myCarousel" ><span>6</span>安装中</li>
+       <li data-target="#myCarousel" ><span>4</span>设置端口</li>
+        <li data-target="#myCarousel" ><span>5</span>设置Redis</li>
+        <li data-target="#myCarousel" ><span>6</span>设置Rabbit</li>
+          <li data-target="#myCarousel" ><span>7</span>安装中</li>
         <li data-target="#myCarousel" ><span class="glyphicon glyphicon-ok"></span>安装完成</li>
       </ol>
     </div>
@@ -52,45 +53,48 @@
             {% if ansible %}
               <tr><td>ansible</td><td></td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
             {% else %}
-             <tr><td>ansible</td><td></td><td><span class="glyphicon glyphicon-remove"></span></td></tr>
+             <tr><td>ansible</td><td></td><td><span class="glyphicon glyphicon-remove"></span>
+                 &nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id = "ansible">安装</button></td></tr>
             {% endif %}
 
             {% if pip %}
               <tr><td>pip</td><td></td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
             {% else %}
-            <tr><td>pip</td><td></td><td><span class="glyphicon glyphicon-remove"></span></td></tr>
+            <tr><td>pip</td><td></td><td><span class="glyphicon glyphicon-remove"></span>
+            &nbsp;&nbsp;&nbsp;&nbsp;<button  type="button" id = "pip">安装</button></td></tr>
             {% endif %}
 
             {% if sshpass %}
               <tr><td>sshpass</td><td></td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
             {% else %}
-            <tr><td>sshpass</td><td></td><td><span class="glyphicon glyphicon-remove"></span></td></tr>
+            <tr><td>sshpass</td><td></td><td><span class="glyphicon glyphicon-remove"></span>
+            &nbsp;&nbsp;&nbsp;&nbsp;<button  type="button" id = "sshpass">安装</button></td></tr>
             {% endif %}
 
-            {% if mysql %}
-            <tr><td>mysql客户端</td><td></td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
-            {% else %}
-              <tr><td>mysql客户端</td><td></td><td><span class="glyphicon glyphicon-remove"></span></td></tr>
-            {% endif %}
+{#            {% if mysql %}#}
+{#            <tr><td>mysql客户端</td><td></td><td><span class="glyphicon glyphicon-ok"></span></td></tr>#}
+{#            {% else %}#}
+{#              <tr><td>mysql客户端</td><td></td><td><span class="glyphicon glyphicon-remove"></span></td></tr>#}
+{#            {% endif %}#}
             </table>
-            <p class="tfooter">是否尝试修复（安装)
-
-              <label class="radio-inline" style="margin-left:20px; ">
-                <input type="radio" name="optionsRadiosinline" id="optionsRadios3" value="option1" disabled ="disabled" > YES
-              </label>
-              <label class="radio-inline">
-                <input type="radio" name="optionsRadiosinline" id="optionsRadios4"  value="option2" checked> NO
-              </label>
-            </p>
+{#            <p class="tfooter">是否尝试修复（安装)#}
+{##}
+{#              <label class="radio-inline" style="margin-left:20px; ">#}
+{#                <input type="radio" name="optionsRadiosinline" id="optionsRadios3" value="option1" disabled ="disabled" > YES#}
+{#              </label>#}
+{#              <label class="radio-inline">#}
+{#                <input type="radio" name="optionsRadiosinline" id="optionsRadios4"  value="option2" checked> NO#}
+{#              </label>#}
+{#            </p>#}
           </div>
         </div>
         <div class="item">
-          <h2><img src="/static/images/arrow.png" />设置用户信息</h2>
+          <h2><img src="/static/images/arrow.png" />设置基本信息</h2>
           <div class="content">
-            <p class="infor">请填写以下用户的相关信息</p>
+            <p class="infor">请填写以下基本信息</p>
             <form class="form-horizontal" role="form" id="userForm">
               <div class="form-group">
-                <label for="opsgrat_user" class="col-sm-4 control-label" style="text-indent: 44px"><span class="red">*</span>OpsGrat用户：</label>
+                <label for="opsgrat_user" class="col-sm-4 control-label" style="text-indent: 100px"><span class="red">*</span>用户：</label>
                 <div class="col-sm-8">
                   <input type="text" class="form-control " id="opsgrat_user" name="opsgrat_user"  placeholder="请输入用户名称" value="{{ file.opsgrat_user }}">
                 </div>
@@ -98,27 +102,27 @@
                   </script>
               </div>
               <div class="form-group">
-                <label for="opsgrat_group" class="col-sm-4 control-label" style="text-indent: 30px"><span class="red">*</span>OpsGrat用户组：</label>
+                <label for="opsgrat_group" class="col-sm-4 control-label" style="text-indent: 86px"><span class="red">*</span>用户组：</label>
                 <div class="col-sm-8">
                   <input type="text" class="form-control" id="opsgrat_group" name="opsgrat_group" placeholder="请输入用户组名称" value="{{ file.opsgrat_group }}">
                 </div>
               </div>
               <div class="form-group">
-                <label for="install_dir" class="col-sm-4 control-label" style="text-indent: 17px"><span class="red">*</span>OpsGrat安装路径：</label>
+                <label for="install_dir" class="col-sm-4 control-label" style="text-indent: 73px"><span class="red">*</span>安装路径：</label>
                 <div class="col-sm-8">
                   <input type="text" class="form-control" id="install_dir" name="install_dir" placeholder="请输入安装路径" value="{{ file.install_dir }}">
                 </div>
               </div>
                 <div class="form-group">
-                <label for="log_dir" class="col-sm-4 control-label" style="text-indent: 17px"><span class="red">*</span>OpsGrat日志路径：</label>
+                <label for="log_dir" class="col-sm-4 control-label" style="text-indent: 73px"><span class="red">*</span>日志路径：</label>
                 <div class="col-sm-8">
                   <input type="text" class="form-control" id="log_dir" name="log_dir" placeholder="请输入日志路径" value="{{ file.log_dir }}">
                 </div>
                 </div>
                 <div class="form-group">
-                <label for="pid_dir" class="col-sm-4 control-label" style="text-indent: 14px"><span class="red">*</span>OpsGrat_PID路径：</label>
+                <label for="pid_dir" class="col-sm-4 control-label" style="text-indent: 59px"><span class="red">*</span>进程ID路径：</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" id="pid_dir" name="pid_dir" placeholder="请输入PID路径" value="{{ file.pid_dir }}">
+                  <input type="text" class="form-control" id="pid_dir" name="pid_dir" placeholder="请输入进程ID路径" value="{{ file.pid_dir }}">
                 </div>
                 </div>
             </form>
@@ -153,6 +157,57 @@
                   <input type="text" class="form-control" id="mysql_user_password" name="mysql_user_password" placeholder="请输入MySQL密码" value="{{ file.mysql_user_password }}">
                 </div>
               </div>
+
+            <div class="form-group">
+                <label for="mysql_opsgrat_db" class="col-sm-4 control-label" style="text-indent: 18px"><span class="red">*</span>OpsGrat数据库名：</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="mysql_opsgrat_db" name="mysql_opsgrat_db" placeholder="如果数据库已存在,则不会导入表" onkeyup="var reg = /^[\_a-z]+$/;if(!reg.test(this.value)) {this.value=''; placeholder='只能输入小写英文和下划线'}" value="{{ file.mysql_opsgrat_db }}">
+                </div>
+              </div>
+
+                <div class="form-group">
+                <label for="mysql_sso_db" class="col-sm-4 control-label" style="text-indent: 45px"><span class="red">*</span>SSO数据库名：</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="mysql_sso_db" name="mysql_sso_db" placeholder="如果数据库已存在,则不会导入表" onkeyup="var reg = /^[\_a-z]+$/;if(!reg.test(this.value)) {this.value=''; placeholder='只能输入小写英文和下划线'}" value="{{ file.mysql_sso_db }}">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      <div class="item">
+          <h2><img src="/static/images/arrow.png" />设置端口</h2>
+          <div class="content">
+            <p class="infor">请填写端口信息</p>
+            <form class="form-horizontal" role="form" id="redisForm">
+              <div class="form-group">
+                <label for="opsgrat_uwsgi_port" class="col-sm-4 control-label" style="text-indent: 10px"><span class="red">*</span>OpsGrat_Web端口：</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="opsgrat_uwsgi_port" name="opsgrat_uwsgi_port" placeholder="请输入OpsGrat_Web端口" value="{{ file.opsgrat_uwsgi_port }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="opsgrat_nginx_port" class="col-sm-4 control-label" style="text-indent: 1px"><span class="red">*</span>OpsGrat_Nginx端口：</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="opsgrat_nginx_port" name="opsgrat_nginx_port" placeholder="请输入OpsGrat_Nginx端口" value="{{ file.opsgrat_nginx_port }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="sso_uwsgi_port" class="col-sm-4 control-label" style="text-indent: 43px">SSO_Web端口：</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="sso_uwsgi_port" name="sso_uwsgi_port" placeholder="请输入SSO_Web端口" value="{{ file.sso_uwsgi_port }}">
+
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="sso_nginx_port" class="col-sm-4 control-label" style="text-indent: 34px">SSO_Nginx端口：</label>
+                <div class="col-sm-8">
+
+                 <input type="text" class="form-control" id="sso_nginx_port" name="sso_nginx_port" placeholder="请输入SSO_Nginx端口" value="{{ file.sso_nginx_port }}">
+
+                </div>
+              </div>
+
             </form>
           </div>
         </div>
@@ -224,8 +279,7 @@
           <div class="content">
             <div class="installing" style="">
 {#              <p>安装中...</p>#}
-                <div class="scroll-box">
-                <p id = "log"></p>
+                <div class="scroll-box" id = "log">
                 </div>
               </div>
           </div>
@@ -237,7 +291,7 @@
               <div class="success">
               <span class="glyphicon glyphicon-ok"></span>
               <p>安装成功</p>
-              <a class="btn btn-info" onclick="use()">开始使用OpsGrat</a>
+              <a class="btn btn-info" onclick="use({{ file.opsgrat_uwsgi_port }})">开始使用OpsGrat</a>
             </div>
             </div>
         </div>
@@ -258,8 +312,12 @@
         </a>
 
 
-         <a id="finishButton">
+{#         <a id="finishButton">#}
+{##}
+{#        </a>#}
 
+       <a class="carousel-control btn btn-info"  href="#myCarousel" role="button" id="stopButton">
+        停止安装
         </a>
 
         <!-- 当安装完成 -->
@@ -275,18 +333,29 @@ var interval_id = null;
 function getScriptResult(isInit) {
 
     $.getJSON('{% url "api_check" %}', {format: "json"}, function(data) {
-        if(data.is_running == false) {
+
+        if(data.is_running == false && data.result != false) {
             var web_logs = data.log;
             var logs = web_logs.replace('\n', '<br/>');
             var html_logs = '<i id="spinner" class="fa fa-spinner fa-spin">' + logs + '</i>';
-            var html = '<a class="right carousel-control btn btn-info" href="#myCarousel" role="button" data-slide="next" >' +
-                '下一步' +
-                ' </a>';
-            $("#finishButton").html(html);
+            {#var html = '<a class="right carousel-control btn btn-info" href="#myCarousel" role="button" data-slide="next" >' +#}
+            {#    '下一步' +#}
+            {#    ' </a>';#}
+            {#$("#finishButton").html(html);#}
             $("#log").html(html_logs);
             $("#prevButton").show();
             $("#SubmitButton").show();
+            $("#stopButton").hide();
+
             window.clearInterval(interval_id);
+
+        }else if (data.is_running == false && data.result == false){
+            var web_check_log = data.log;
+            var check_log = web_check_log.replace('\n', '<br/>');
+            var html_check_log = '<i id="spinner" class="fa fa-spinner fa-spin">' + check_log + '</i>';
+            $("#reTryButton").show();
+             $("#stopButton").hide();
+             window.clearInterval(interval_id);
 
         }else {
             var web_log = data.log;
@@ -294,14 +363,15 @@ function getScriptResult(isInit) {
             var html_log = '<i id="spinner" class="fa fa-spinner fa-spin">' + log + '</i>';
             $("#log").html(html_log);
             $("#prevButton").hide();
-             $("#SubmitButton").hide();
+            $("#SubmitButton").hide();
+            $("#reTryButton").hide();
 
         }
     })
 
 }
-var a=0;
-$("#finishButton").hide();
+$("#stopButton").hide();
+{#$("#finishButton").hide();#}
 $("#reTryButton").hide();
 $(function(){
     $('#myCarousel').carousel({
@@ -317,8 +387,10 @@ $(function(){
 
       //判断当每页的的输入框都添加值之后可以点击下一步，否则为不能点击状态
       if (getIndex == 0 ) {
+          $("#stopButton").hide();
           $("#SubmitButton").attr('class', 'right carousel-control btn btn-info')
       }else if (getIndex == 1){
+          $("#stopButton").hide();
             $("#opsgrat_user, #opsgrat_group, #install_dir, #log_dir, #pid_dir").keyup(function(){
                 if ($.trim($("#opsgrat_user").val())!='' && $.trim($("#opsgrat_group").val())!='' && $.trim($("#install_dir").val())!=''
                     && $.trim($("#log_dir").val())!='' && $.trim($("#pid_dir").val())!=''){
@@ -335,9 +407,10 @@ $(function(){
                 $("#SubmitButton").attr('class', 'right carousel-control btn btn-info disabled');
             }
       }else if (getIndex == 2){
-          $("#mysql_host, #mysql_port, #mysql_user, #mysql_user_password").keyup(function(){
+          $("#stopButton").hide();
+          $("#mysql_host, #mysql_port, #mysql_user, #mysql_user_password, #mysql_opsgrat_db, #mysql_sso_db").keyup(function(){
                 if ($.trim($("#mysql_host").val())!='' && $.trim($("#mysql_port").val())!='' && $.trim($("#mysql_user").val())!=''
-                    && $.trim($("#mysql_user_password").val())!=''){
+                    && $.trim($("#mysql_user_password").val())!='' && $.trim($("#mysql_opsgrat_db").val())!='' && $.trim($("#mysql_sso_db").val())!=''){
 
                     $("#SubmitButton").attr('class', 'right carousel-control btn btn-info ')
                 }else {
@@ -345,12 +418,30 @@ $(function(){
                 }
           });
           if  ($("#mysql_host").val()!='' && $("#mysql_port").val()!='' && $("#mysql_user").val()!=''
-                    && $("#mysql_user_password").val()!=''){
+                    && $("#mysql_user_password").val()!= '' && $("#mysql_opsgrat_db").val()!= '' && $("#mysql_sso_db").val()!= ''){
                  $("#SubmitButton").attr('class', 'right carousel-control btn btn-info ');
           }else {
                 $("#SubmitButton").attr('class', 'right carousel-control btn btn-info disabled');
           }
       }else if (getIndex == 3){
+          $("#stopButton").hide();
+          $("#opsgrat_uwsgi_port, #opsgrat_nginx_port, #sso_nginx_port, #sso_uwsgi_port").keyup(function(){
+                if ($.trim($("#opsgrat_uwsgi_port").val())!='' && $.trim($("#opsgrat_nginx_port").val())!='' && $.trim($("#sso_nginx_port").val())!=''
+                    && $.trim($("#sso_uwsgi_port").val())!=''){
+
+                    $("#SubmitButton").attr('class', 'right carousel-control btn btn-info ')
+                }else {
+                     $("#SubmitButton").attr('class', 'right carousel-control btn btn-info disabled');
+                }
+          });
+          if  ($("#opsgrat_uwsgi_port").val()!='' && $("#opsgrat_nginx_port").val()!='' && $("#sso_nginx_port").val()!=''
+                    && $("#sso_uwsgi_port").val()!= ''){
+                 $("#SubmitButton").attr('class', 'right carousel-control btn btn-info ');
+          }else {
+                $("#SubmitButton").attr('class', 'right carousel-control btn btn-info disabled');
+          }
+      }else if (getIndex == 4){
+          $("#stopButton").hide();
           $("#redis_host, #redis_port").keyup(function(){
                 if ($.trim($("#redis_host").val())!='' && $.trim($("#redis_port").val())!=''){
 
@@ -364,7 +455,8 @@ $(function(){
           }else {
                 $("#SubmitButton").attr('class', 'right carousel-control btn btn-info disabled');
           }
-      }else if (getIndex == 4){
+      }else if (getIndex == 5){
+          $("#stopButton").hide();
           $("#rabbitmq_host, #rabbitmq_port, #rabbitmq_user, #rabbitmq_passwd").keyup(function(){
                 if ($.trim($("#rabbitmq_host").val())!='' && $.trim($("#rabbitmq_port").val())!='' && $.trim($("#rabbitmq_user").val())!=''
                 && $.trim($("#rabbitmq_passwd").val())!=''){
@@ -383,7 +475,7 @@ $(function(){
 
       }
 
-      else if (getIndex == 5) {
+      else if (getIndex == 6) {
 
               var form = $("#rabbitForm").validate({
                   submitHandler: function(form) {
@@ -426,15 +518,17 @@ $(function(){
 
 
           $("#cancel").hide();
-          $("#SubmitButton").show();
-          $("#reTryButton").show();
+          {#$("#SubmitButton").show();#}
+          {#$("#reTryButton").show();#}
+          $("#stopButton").show();
 
       }
 
-      else if (getIndex == 6){
+      else if (getIndex == 7){
           $("#prevButton").hide();
           $("#reTryButton").hide();
-           $("#SubmitButton").hide();
+          $("#SubmitButton").hide();
+          $("#stopButton").hide();
       }
 
   })
@@ -447,9 +541,9 @@ $("#cancel").on("click", function (e) {
 
 });
 
-function use() {
+function use(port) {
     var address = window.location.hostname;
-    window.location.href = "http://" + address
+    window.location.href = "http://" + address + ':' + port
 
 }
 
@@ -468,7 +562,6 @@ $("#prevButton").on("click", function (e) {
      $("#SubmitButton").attr('class', 'right carousel-control btn btn-info');
      $("#reTryButton").hide();
       $("#SubmitButton").show();
-      a = 0
 
 });
 
@@ -511,6 +604,86 @@ $("#reTryButton").on("click", function (e) {
 });
 
 
+$("#ansible").on("click", function (e) {
+    $.ajax({
+        type:"post",
+        url:"{% url 'api_setup_ansible' %}?format=json",
+        success:function (data) {
+
+        },
+        error: function(data) {
+            var content = data.responseText;
+            try {
+                var json = $.parseJSON(data.responseText);
+                if(typeof json.detail != 'undefined') content = json.detail;
+            } catch (e) {
+                content = "服务端错误"
+            }
+        }
+    })
+});
+
+
+$("#pip").on("click", function (e) {
+    $.ajax({
+        type:"post",
+        url:"{% url 'api_setup_pip' %}?format=json",
+        success:function (data) {
+
+        },
+        error: function(data) {
+            var content = data.responseText;
+            try {
+                var json = $.parseJSON(data.responseText);
+                if(typeof json.detail != 'undefined') content = json.detail;
+            } catch (e) {
+                content = "服务端错误"
+            }
+        }
+    })
+});
+
+
+$("#sshpass").on("click", function (e) {
+    $.ajax({
+        type:"post",
+        url:"{% url 'api_setup_sshpass' %}?format=json",
+        success:function (data) {
+
+        },
+        error: function(data) {
+            var content = data.responseText;
+            try {
+                var json = $.parseJSON(data.responseText);
+                if(typeof json.detail != 'undefined') content = json.detail;
+            } catch (e) {
+                content = "服务端错误"
+            }
+        }
+    })
+});
+
+
+$("#stopButton").on("click", function (e) {
+        $.ajax({
+        type:"post",
+        url:"{% url 'api_stop_pid' %}?format=json",
+        success:function (data) {
+
+        },
+        error: function(data) {
+            var content = data.responseText;
+            try {
+                var json = $.parseJSON(data.responseText);
+                if(typeof json.detail != 'undefined') content = json.detail;
+            } catch (e) {
+                content = "服务端错误"
+            }
+        }
+    })
+
+
+})
 </script>
 </body>
 </html>
