@@ -10,7 +10,7 @@ import yaml,re
 
 
 @transaction.atomic()
-@api_view(['POST'])
+@api_view(['GET'])
 def setup(request):
 
     opsgrat_user = request.POST.get('opsgrat_user')
