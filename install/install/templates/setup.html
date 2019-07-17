@@ -367,6 +367,7 @@ function getScriptResult(isInit) {
             $("#prevButton").hide();
             $("#SubmitButton").hide();
             $("#reTryButton").hide();
+            $("#stopButton").show();
 
         }
     })
@@ -522,7 +523,7 @@ $(function(){
           $("#cancel").hide();
           {#$("#SubmitButton").show();#}
           {#$("#reTryButton").show();#}
-          $("#stopButton").show();
+          {#$("#stopButton").show();#}
 
       } else if (getIndex == 7){
           $("#prevButton").hide();
@@ -546,16 +547,6 @@ function use(port) {
     window.location.href = "http://" + address + ':' + port
 
 }
-
-
-{#$("#optionsRadios4").on('change', function (e) {#}
-    {#$("#SubmitButton").attr('class','right carousel-control btn btn-info disabled')#}
-{#});#}
-{##}
-{#$("#optionsRadios3").on('change', function (e) {#}
-{#    $("#SubmitButton").attr('class','right carousel-control btn btn-info')#}
-{#});#}
-{##}
 
 
 $("#prevButton").on("click", function (e) {
@@ -680,9 +671,9 @@ $("#stopButton").on("click", function (e) {
             }
         }
     })
-
-
 })
+
+
 </script>
 </body>
 </html>
