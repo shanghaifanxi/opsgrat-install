@@ -121,8 +121,8 @@ def check(request):
     if msg == False and os.path.exists(filePathCheck):
         os.remove(filePathCheck)
 
-    with open(filePathLog, 'r') as f:
-        content = f.read()
+    with open(filePathLog, 'r') as kf:
+        content = kf.read()
     pattern = re.compile(r'(?<=failed=)\d+\.?\d*')
     check_logs = pattern.findall(content)
     if msg == False and check_logs[0] == 0:
