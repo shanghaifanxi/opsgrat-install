@@ -124,8 +124,11 @@ def check(request):
     pattern = re.compile(r'(?<=failed=)\d+\.?\d*')
     check_logs = pattern.findall(log)
     try:
-        if check_logs[0] == '0':
-            information = True
+        for check_log in check_logs:
+            if check_log == '0':
+                information = True
+            else:
+                information = False
     except:
         information = False
 
