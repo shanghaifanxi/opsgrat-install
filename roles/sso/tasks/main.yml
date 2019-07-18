@@ -13,6 +13,9 @@
     groups: "{{ opsgrat_group }}"
     state: "present"
 
+- name: Disable SELINUX
+  selinux: state=disabled
+
 - name: Create opsgrat sso dir.
   file: path={{ item }} owner={{ opsgrat_user }} group={{ opsgrat_group }} state=directory
   with_items:

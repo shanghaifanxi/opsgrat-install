@@ -4,7 +4,7 @@
 - name: Install Python3.6 Source.
   yum: name={{ item }} state=present
   with_items:
-   - epel-release
+   - https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
    - https://centos7.iuscommunity.org/ius-release.rpm
 
 - name: Install Python3.6 and pip3.6.
