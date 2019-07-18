@@ -333,7 +333,7 @@ function getScriptResult(isInit) {
 
     $.getJSON('{% url "api_check" %}', {format: "json"}, function(data) {
 
-        if(data.is_running == false && data.result == true ) {
+        if(data.is_running == false && data.information == true ) {
             var web_check_log = data.log;
             var check_log = web_check_log.replace('\n', '<br/>');
             var html_check_log = '' + check_log ;
@@ -345,7 +345,7 @@ function getScriptResult(isInit) {
 
             window.clearInterval(interval_id);
 
-        }else if (data.is_running == false && data.result == false){
+        }else if (data.is_running == false && data.information == false){
             var web_check_logs = data.log;
             var check_logs = web_check_logs.replace('\n', '<br/>');
             var html_check_logs = '' + check_logs ;
