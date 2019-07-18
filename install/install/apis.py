@@ -125,7 +125,7 @@ def check(request):
         content = f.read()
         pattern = re.compile(r'(?<=failed=)\d+\.?\d*')
         check_logs = pattern.findall(content)
-    if msg == False and check_logs[0] > 0 or check_logs == []:
+    if msg == False and check_logs[0] > 0 or msg == False and check_logs == []:
         result = False
     else:
         result = True

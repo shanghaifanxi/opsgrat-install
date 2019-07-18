@@ -336,7 +336,7 @@ function getScriptResult(isInit) {
         if(data.is_running == false && data.result != false ) {
             var web_check_log = data.log;
             var check_log = web_check_log.replace('\n', '<br/>');
-            var html_check_log = + check_log ;
+            var html_check_log = '' + check_log ;
 
             $("#log").html(html_check_log);
             $("#prevButton").show();
@@ -348,7 +348,7 @@ function getScriptResult(isInit) {
         }else if (data.is_running == false && data.result == false){
             var web_check_logs = data.log;
             var check_logs = web_check_logs.replace('\n', '<br/>');
-            var html_check_logs = '<i id="spinner" class="fa fa-spinner fa-spin">' + check_logs + '</i>';
+            var html_check_logs = '' + check_logs ;
             $("#reTryButton").show();
             $("#prevButton").show();
              $("#stopButton").hide();
@@ -358,7 +358,7 @@ function getScriptResult(isInit) {
         } else {
             var web_log = data.log;
             var log = web_log.replace('\n', '<br/>');
-            var html_log = + log ;
+            var html_log = '' + log ;
             $("#log").html(html_log);
             $("#prevButton").hide();
             $("#SubmitButton").hide();
