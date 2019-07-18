@@ -94,6 +94,7 @@ def check(request):
 
     log = ""
     msg = ""
+    result = ""
     curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))
     fileNameLog = 'opsgrat_setup.log'
     filePathLog = curDir + fileNameLog
@@ -124,10 +125,8 @@ def check(request):
         content = f.read()
         pattern = re.compile(r'(?<=failed=)\d+\.?\d*')
         check_logs = pattern.findall(content)
-    if msg == False and check_logs[0] > 0:
+    if msg == False and check_logs[0] > 0 or check_logs == []:
         result = False
-    elif msg == False and check_logs == []:
-        result = 'null'
     else:
         result = True
 

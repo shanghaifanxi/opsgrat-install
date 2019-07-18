@@ -333,10 +333,10 @@ function getScriptResult(isInit) {
 
     $.getJSON('{% url "api_check" %}', {format: "json"}, function(data) {
 
-        if(data.is_running == false && data.result == true ) {
+        if(data.is_running == false && data.result != false ) {
             var web_check_log = data.log;
             var check_log = web_check_log.replace('\n', '<br/>');
-            var html_check_log = '<i id="spinner" class="fa fa-spinner fa-spin">' + check_log + '</i>';
+            var html_check_log = + check_log ;
 
             $("#log").html(html_check_log);
             $("#prevButton").show();
@@ -355,18 +355,10 @@ function getScriptResult(isInit) {
              $("#log").html(html_check_logs);
              window.clearInterval(interval_id);
 
-        } else if (data.is_running == false && data.result == null){
-            var web_logs = data.log;
-            var logs = web_logs.replace('\n', '<br/>');
-            var html_logs = + logs  ;
-            $("#reTryButton").show();
-            $("#prevButton").show();
-             $("#stopButton").hide();
-             $("#log").html(html_logs);
         } else {
             var web_log = data.log;
             var log = web_log.replace('\n', '<br/>');
-            var html_log = '<i id="spinner" class="fa fa-spinner fa-spin">' + log + '</i>';
+            var html_log = + log ;
             $("#log").html(html_log);
             $("#prevButton").hide();
             $("#SubmitButton").hide();
