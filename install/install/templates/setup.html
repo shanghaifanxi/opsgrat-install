@@ -60,8 +60,7 @@
             {% if pip %}
               <tr><td>pip</td><td></td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
             {% else %}
-            <tr><td>pip</td><td></td><td><span class="glyphicon glyphicon-remove"></span>
-            &nbsp;&nbsp;&nbsp;&nbsp;<button  type="button" id = "pip">安装</button></td></tr>
+                <tr><td>pip</td><td></td><td><span class="glyphicon glyphicon-remove"></span></td></tr>
             {% endif %}
 
             {% if sshpass %}
@@ -334,12 +333,12 @@ function getScriptResult(isInit) {
 
     $.getJSON('{% url "api_check" %}', {format: "json"}, function(data) {
 
-        if(data.is_running == false && data.result != false) {
-            var web_logs = data.log;
-            var logs = web_logs.replace('\n', '<br/>');
-            var html_logs = '<i id="spinner" class="fa fa-spinner fa-spin">' + logs + '</i>';
+        if(data.is_running == false && data.result != false ) {
+            var web_check_log = data.log;
+            var check_log = web_check_log.replace('\n', '<br/>');
+            var html_check_log = '' + check_log ;
 
-            $("#log").html(html_logs);
+            $("#log").html(html_check_log);
             $("#prevButton").show();
             $("#SubmitButton").show();
             $("#stopButton").hide();
@@ -347,19 +346,19 @@ function getScriptResult(isInit) {
             window.clearInterval(interval_id);
 
         }else if (data.is_running == false && data.result == false){
-            var web_check_log = data.log;
-            var check_log = web_check_log.replace('\n', '<br/>');
-            var html_check_log = '<i id="spinner" class="fa fa-spinner fa-spin">' + check_log + '</i>';
+            var web_check_logs = data.log;
+            var check_logs = web_check_logs.replace('\n', '<br/>');
+            var html_check_logs = '' + check_logs ;
             $("#reTryButton").show();
             $("#prevButton").show();
              $("#stopButton").hide();
-             $("#log").html(html_check_log);
+             $("#log").html(html_check_logs);
              window.clearInterval(interval_id);
 
-        }else {
+        } else {
             var web_log = data.log;
             var log = web_log.replace('\n', '<br/>');
-            var html_log = '<i id="spinner" class="fa fa-spinner fa-spin">' + log + '</i>';
+            var html_log = '' + log ;
             $("#log").html(html_log);
             $("#prevButton").hide();
             $("#SubmitButton").hide();
@@ -595,7 +594,8 @@ function getAnsibleResult(isInit) {
     $.getJSON('{% url "api_ansible" %}', {format: "json"}, function(data) {
         if (data.result == false){
             window.clearInterval(interval_ansible);
-            alert('ansible安装成功！')
+            {#alert('ansible安装成功！')#}
+            window.location.reload()
         }
 
     })
@@ -626,43 +626,6 @@ $("#ansible").on("click", function (e) {
 });
 
 
-//安装pip,并进行进程查询，若进程停止，则停止刷新页面返回数据结果
-var interval_pip = null;
-function getPipResult(isInit) {
-
-    $.getJSON('{% url "api_pip" %}', {format: "json"}, function(data) {
-        if (data.result == false){
-            window.clearInterval(interval_pip);
-            alert('pip安装成功！')
-        }
-
-    })
-}
-
-$("#pip").on("click", function (e) {
-    $.ajax({
-        type:"post",
-        url:"{% url 'api_setup_pip' %}?format=json",
-        success:function (data) {
-           $.ajax({
-               type:"get",
-               url:"{% url 'api_pip' %}?format=json",
-           });
-           getPipResult(true);
-           interval_pip = setInterval("getPipResult(false)", 2*1000);
-        },
-        error: function(data) {
-            var content = data.responseText;
-            try {
-                var json = $.parseJSON(data.responseText);
-                if(typeof json.detail != 'undefined') content = json.detail;
-            } catch (e) {
-                content = "服务端错误"
-            }
-        }
-    })
-});
-
 
 //安装sshpass,并进行进程查询，若进程停止，则停止刷新页面返回数据结果
 var interval_sshpass = null;
@@ -671,7 +634,8 @@ function getSshPassResult(isInit) {
     $.getJSON('{% url "api_sshpass" %}', {format: "json"}, function(data) {
         if (data.result == false){
             window.clearInterval(interval_sshpass);
-            alert('sshpass安装成功！')
+            {#alert('sshpass安装成功！');#}
+            window.location.reload()
         }
 
     })
