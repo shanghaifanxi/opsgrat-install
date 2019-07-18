@@ -8,10 +8,17 @@ mysql_host: 127.0.0.1
 mysql_port: 3306
 mysql_user: root
 mysql_user_password: root
+mysql_opsgrat_db: opsgrat
+mysql_sso_db: opsgrat_sso
+
+opsgrat_uwsgi_port: 7500
+opsgrat_nginx_port: 8500
+sso_nginx_port: 8501
+sso_uwsgi_port: 7501
 
 redis_host: 127.0.0.1
 redis_port: 6379
-redis_passwd: 55
+redis_passwd: 
 
 rabbitmq_host: 127.0.0.1
 rabbitmq_port: 5672
