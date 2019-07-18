@@ -53,8 +53,7 @@
             {% if ansible %}
               <tr><td>ansible</td><td></td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
             {% else %}
-             <tr><td>ansible</td><td></td><td><span class="glyphicon glyphicon-remove"></span>
-                 &nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id = "ansible">安装</button></td></tr>
+             <tr><td>ansible</td><td></td><td><span class="glyphicon glyphicon-remove"></span></td></tr>
             {% endif %}
 
             {% if pip %}
@@ -66,8 +65,7 @@
             {% if sshpass %}
               <tr><td>sshpass</td><td></td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
             {% else %}
-            <tr><td>sshpass</td><td></td><td><span class="glyphicon glyphicon-remove"></span>
-            &nbsp;&nbsp;&nbsp;&nbsp;<button  type="button" id = "sshpass">安装</button></td></tr>
+            <tr><td>sshpass</td><td></td><td><span class="glyphicon glyphicon-remove"></span></td></tr>
             {% endif %}
 
 {#            {% if mysql %}#}
@@ -278,7 +276,7 @@
           <div class="content">
             <div class="installing" style="">
 {#              <p>安装中...</p>#}
-                <div class="scroll-box" id = "log">
+                <div class="scroll-box" style="white-space: pre-line;" id = "log">
                 </div>
               </div>
           </div>
@@ -290,7 +288,7 @@
               <div class="success">
               <span class="glyphicon glyphicon-ok"></span>
               <p>安装成功</p>
-              <a class="btn btn-info" onclick="use({{ file.opsgrat_uwsgi_port }})">开始使用OpsGrat</a>
+              <a class="btn btn-info" onclick="use({{ file.sso_nginx_port }})">开始使用OpsGrat</a>
             </div>
             </div>
         </div>
@@ -333,7 +331,7 @@ function getScriptResult(isInit) {
 
     $.getJSON('{% url "api_check" %}', {format: "json"}, function(data) {
 
-        if(data.is_running == false && data.result != false ) {
+        if(data.is_running == false && data.information == true ) {
             var web_check_log = data.log;
             var check_log = web_check_log.replace('\n', '<br/>');
             var html_check_log = '' + check_log ;
@@ -345,7 +343,7 @@ function getScriptResult(isInit) {
 
             window.clearInterval(interval_id);
 
-        }else if (data.is_running == false && data.result == false){
+        }else if (data.is_running == false && data.information == false){
             var web_check_logs = data.log;
             var check_logs = web_check_logs.replace('\n', '<br/>');
             var html_check_logs = '' + check_logs ;
