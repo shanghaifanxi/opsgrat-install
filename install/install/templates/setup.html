@@ -179,28 +179,28 @@
           <h2><img src="/static/images/arrow.png" />设置端口</h2>
           <div class="content">
             <p class="infor">请填写端口信息</p>
-            <form class="form-horizontal" role="form" id="redisForm">
+            <form class="form-horizontal" role="form" id="portForm">
               <div class="form-group">
-                <label for="opsgrat_uwsgi_port" class="col-sm-4 control-label" style="text-indent: 10px"><span class="red">*</span>OpsGrat_Web端口：</label>
+                <label for="opsgrat_uwsgi_port" class="col-sm-4 control-label" style="text-indent: 1px"><span class="red">*</span>OpsGrat_WSGI端口：</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" id="opsgrat_uwsgi_port" name="opsgrat_uwsgi_port" onkeyup="var reg = /^[1-9]+[0-9]*/;if(!reg.test(this.value)) {this.value='';placeholder = '只能输入大于0的数字'}" placeholder="请输入OpsGrat_Web端口" value="{{ file.opsgrat_uwsgi_port }}">
+                  <input type="text" class="form-control" id="opsgrat_uwsgi_port" name="opsgrat_uwsgi_port" onkeyup="var reg = /^[1-9]+[0-9]*/;if(!reg.test(this.value)) {this.value='';placeholder = '只能输入大于0的数字'}" placeholder="请输入OpsGrat_WSGI端口" value="{{ file.opsgrat_uwsgi_port }}">
                 </div>
               </div>
               <div class="form-group">
-                <label for="opsgrat_nginx_port" class="col-sm-4 control-label" style="text-indent: 1px"><span class="red">*</span>OpsGrat_Nginx端口：</label>
+                <label for="opsgrat_nginx_port" class="col-sm-4 control-label" style="text-indent: 0"><span class="red">*</span>OpsGrat_Nginx端口：</label>
                 <div class="col-sm-8">
                   <input type="text" class="form-control" id="opsgrat_nginx_port" name="opsgrat_nginx_port" onkeyup="var reg = /^[1-9]+[0-9]*/;if(!reg.test(this.value)) {this.value='';placeholder = '只能输入大于0的数字'}" placeholder="请输入OpsGrat_Nginx端口" value="{{ file.opsgrat_nginx_port }}">
                 </div>
               </div>
               <div class="form-group">
-                <label for="sso_uwsgi_port" class="col-sm-4 control-label" style="text-indent: 43px">SSO_Web端口：</label>
+                <label for="sso_uwsgi_port" class="col-sm-4 control-label" style="text-indent: 28px"><span class="red">*</span>SSO_WSGI端口：</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" id="sso_uwsgi_port" name="sso_uwsgi_port" onkeyup="var reg = /^[1-9]+[0-9]*/;if(!reg.test(this.value)) {this.value='';placeholder = '只能输入大于0的数字'}" placeholder="请输入SSO_Web端口" value="{{ file.sso_uwsgi_port }}">
+                  <input type="text" class="form-control" id="sso_uwsgi_port" name="sso_uwsgi_port" onkeyup="var reg = /^[1-9]+[0-9]*/;if(!reg.test(this.value)) {this.value='';placeholder = '只能输入大于0的数字'}" placeholder="请输入SSO_WSGI端口" value="{{ file.sso_uwsgi_port }}">
 
                 </div>
               </div>
               <div class="form-group">
-                <label for="sso_nginx_port" class="col-sm-4 control-label" style="text-indent: 34px">SSO_Nginx端口：</label>
+                <label for="sso_nginx_port" class="col-sm-4 control-label" style="text-indent: 27px"><span class="red">*</span>SSO_Nginx端口：</label>
                 <div class="col-sm-8">
 
                  <input type="text" class="form-control" id="sso_nginx_port" name="sso_nginx_port" onkeyup="var reg = /^[1-9]+[0-9]*/;if(!reg.test(this.value)) {this.value='';placeholder = '只能输入大于0的数字'}" placeholder="请输入SSO_Nginx端口" value="{{ file.sso_nginx_port }}">
@@ -338,10 +338,7 @@ function getScriptResult(isInit) {
             var web_logs = data.log;
             var logs = web_logs.replace('\n', '<br/>');
             var html_logs = '<i id="spinner" class="fa fa-spinner fa-spin">' + logs + '</i>';
-            {#var html = '<a class="right carousel-control btn btn-info" href="#myCarousel" role="button" data-slide="next" >' +#}
-            {#    '下一步' +#}
-            {#    ' </a>';#}
-            {#$("#finishButton").html(html);#}
+
             $("#log").html(html_logs);
             $("#prevButton").show();
             $("#SubmitButton").show();
@@ -367,6 +364,7 @@ function getScriptResult(isInit) {
             $("#prevButton").hide();
             $("#SubmitButton").hide();
             $("#reTryButton").hide();
+            $("#stopButton").show();
 
         }
     })
@@ -478,56 +476,50 @@ $(function(){
       }
 
       else if (getIndex == 6) {
+          var form = $("#rabbitForm").validate({
+              submitHandler: function(form) {
+                  var params ={
+                  };
+                  $.each($("#userForm,#mysqlForm,#redisForm, #portForm").serializeArray(), function (k, v) {
+                      params[v.name] = v.value
+                  });
+                  $(form).ajaxSubmit({
+                      type: 'post',
+                      data: params,
+                      url: "{% url 'api_setup' %}?format=json",
+                      success: function(data){
+                          {#var response = ''#}
+                          {#if (data) {#}
+                          {#    response = JSON.parse(data)#}
+                          {#    log(response.pid)#}
 
-              var form = $("#rabbitForm").validate({
-                  submitHandler: function(form) {
-                      var params ={
-                      };
-                      $.each($("#userForm,#mysqlForm,#redisForm").serializeArray(), function (k, v) {
-                          params[v.name] = v.value
-                      });
-                      $(form).ajaxSubmit({
-                          type:"post",
-                          data:params,
-                          url:"{% url 'api_setup' %}?format=json",
-                          success: function(data){
-                              {#var response = ''#}
-                              {#if (data) {#}
-                              {#    response = JSON.parse(data)#}
-                              {#    log(response.pid)#}
-
-                              $.ajax({
+                          $.ajax({
                               type:"get",
                               url:"{% url 'api_check' %}?format=json",
 
                           });
-                              getScriptResult(true);
-                              interval_id = setInterval("getScriptResult(false)", 2*1000);
+                          getScriptResult(true);
+                          interval_id = setInterval("getScriptResult(false)", 2*1000);
 
-                          },
-                          error: function(data) {
-                              var content = data.responseText;
-                              try {
-                                  var json = $.parseJSON(data.responseText);
-                                  if(typeof json.detail != 'undefined') content = json.detail;
-                              } catch (e) {
-                                  content = "服务端错误"
-                              }
+                      },
+                      error: function(data) {
+                          var content = data.responseText;
+                          try {
+                              var json = $.parseJSON(data.responseText);
+                              if(typeof json.detail != 'undefined') content = json.detail;
+                          } catch (e) {
+                              content = "服务端错误"
                           }
-                      });
-                  }
-              });
-              $("#rabbitForm").submit();
+                      }
+                  });
+              }
 
+          });
+          $("#rabbitForm").submit();
 
           $("#cancel").hide();
-          {#$("#SubmitButton").show();#}
-          {#$("#reTryButton").show();#}
-          $("#stopButton").show();
 
-      }
-
-      else if (getIndex == 7){
+      } else if (getIndex == 7){
           $("#prevButton").hide();
           $("#reTryButton").hide();
           $("#SubmitButton").hide();
@@ -551,16 +543,6 @@ function use(port) {
 }
 
 
-{#$("#optionsRadios4").on('change', function (e) {#}
-    {#$("#SubmitButton").attr('class','right carousel-control btn btn-info disabled')#}
-{#});#}
-{##}
-{#$("#optionsRadios3").on('change', function (e) {#}
-{#    $("#SubmitButton").attr('class','right carousel-control btn btn-info')#}
-{#});#}
-{##}
-
-
 $("#prevButton").on("click", function (e) {
      $("#SubmitButton").attr('class', 'right carousel-control btn btn-info');
      $("#reTryButton").hide();
@@ -571,49 +553,65 @@ $("#prevButton").on("click", function (e) {
 
 $("#reTryButton").on("click", function (e) {
 
-       var form = $("#rabbitForm").validate({
-           submitHandler: function(form) {
-               var params ={
-               };
-               $.each($("#userForm,#mysqlForm,#redisForm").serializeArray(), function (k, v) {
-                   params[v.name] = v.value
+   var form = $("#rabbitForm").validate({
+       submitHandler: function(form) {
+           var params ={
+           };
+           $.each($("#userForm, #mysqlForm, #redisForm, #portForm").serializeArray(), function (k, v) {
+               params[v.name] = v.value
+           });
+           $(form).ajaxSubmit({
+               type:"post",
+               data:params,
+               url:"{% url 'api_setup' %}?format=json",
+               success: function(data){
+               $.ajax({
+                   type:"get",
+                   url:"{% url 'api_check' %}?format=json",
                });
-               $(form).ajaxSubmit({
-                   type:"post",
-                   data:params,
-                   url:"{% url 'api_setup' %}?format=json",
-                   success: function(data){
-                       $.ajax({
-                           type:"get",
-                            url:"{% url 'api_check' %}?format=json",
-                       });
-                       getScriptResult(true);
-                       interval_id = setInterval("getScriptResult(false)", 2*1000);
-
-                      },
-                   error: function(data) {
-                       var content = data.responseText;
-                       try {
-                           var json = $.parseJSON(data.responseText);
-                           if(typeof json.detail != 'undefined') content = json.detail;
-                       } catch (e) {
-                           content = "服务端错误"
-                       }
+               getScriptResult(true);
+               interval_id = setInterval("getScriptResult(false)", 2*1000);
+               },
+               error: function(data) {
+                   var content = data.responseText;
+                   try {
+                       var json = $.parseJSON(data.responseText);
+                       if(typeof json.detail != 'undefined') content = json.detail;
+                   } catch (e) {
+                       content = "服务端错误"
                    }
-               });
-           }
+               }
+           })
+       }
        });
     $("#rabbitForm").submit();
-
 });
 
+
+//安装ansible,并进行进程查询，若进程停止，则停止刷新页面返回数据结果
+var interval_ansible = null;
+function getAnsibleResult(isInit) {
+
+    $.getJSON('{% url "api_ansible" %}', {format: "json"}, function(data) {
+        if (data.result == false){
+            window.clearInterval(interval_ansible);
+            alert('ansible安装成功！')
+        }
+
+    })
+}
 
 $("#ansible").on("click", function (e) {
     $.ajax({
         type:"post",
         url:"{% url 'api_setup_ansible' %}?format=json",
         success:function (data) {
-
+           $.ajax({
+               type:"get",
+               url:"{% url 'api_ansible' %}?format=json",
+           });
+           getAnsibleResult(true);
+           interval_ansible = setInterval("getAnsibleResult(false)", 2*1000);
         },
         error: function(data) {
             var content = data.responseText;
@@ -627,13 +625,31 @@ $("#ansible").on("click", function (e) {
     })
 });
 
+
+//安装pip,并进行进程查询，若进程停止，则停止刷新页面返回数据结果
+var interval_pip = null;
+function getPipResult(isInit) {
+
+    $.getJSON('{% url "api_pip" %}', {format: "json"}, function(data) {
+        if (data.result == false){
+            window.clearInterval(interval_pip);
+            alert('pip安装成功！')
+        }
+
+    })
+}
 
 $("#pip").on("click", function (e) {
     $.ajax({
         type:"post",
         url:"{% url 'api_setup_pip' %}?format=json",
         success:function (data) {
-
+           $.ajax({
+               type:"get",
+               url:"{% url 'api_pip' %}?format=json",
+           });
+           getPipResult(true);
+           interval_pip = setInterval("getPipResult(false)", 2*1000);
         },
         error: function(data) {
             var content = data.responseText;
@@ -648,12 +664,30 @@ $("#pip").on("click", function (e) {
 });
 
 
+//安装sshpass,并进行进程查询，若进程停止，则停止刷新页面返回数据结果
+var interval_sshpass = null;
+function getSshPassResult(isInit) {
+
+    $.getJSON('{% url "api_sshpass" %}', {format: "json"}, function(data) {
+        if (data.result == false){
+            window.clearInterval(interval_sshpass);
+            alert('sshpass安装成功！')
+        }
+
+    })
+}
+
 $("#sshpass").on("click", function (e) {
     $.ajax({
         type:"post",
         url:"{% url 'api_setup_sshpass' %}?format=json",
         success:function (data) {
-
+           $.ajax({
+               type:"get",
+               url:"{% url 'api_sshpass' %}?format=json",
+           });
+           getSshPassResult(true);
+           interval_sshpass = setInterval("getSshPassResult(false)", 2*1000);
         },
         error: function(data) {
             var content = data.responseText;
@@ -685,9 +719,9 @@ $("#stopButton").on("click", function (e) {
             }
         }
     })
-
-
 })
+
+
 </script>
 </body>
 </html>

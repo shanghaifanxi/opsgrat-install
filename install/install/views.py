@@ -38,11 +38,6 @@ class SetupView(TemplateView):
         else:
             context['nosshpass'] = None
 
-        # if which('mysql') != '':
-        #     context['mysql'] = which('mysql')
-        # else:
-        #     context['nomysql'] = None
-
         name = "var.yaml"
         curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))
         path = curDir + name
