@@ -122,7 +122,7 @@ def check(request):
 
     pattern = re.compile(r'(?<=failed=)\d+\.?\d*')
     check_logs = pattern.findall(log)
-    if msg == False and check_logs[0] == 0:
+    if check_logs[0] == 0:
         information = True
     else:
         information = False
