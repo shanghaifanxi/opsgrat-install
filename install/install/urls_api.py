@@ -10,9 +10,9 @@ urlpatterns = [
 
     url('ansible/$', apis.ansible, name='api_ansible'),
 
-    url('setup/pip/$', apis.setupPip, name='api_setup_pip'),
-
-    url('pip/$', apis.pip, name='api_pip'),
+    # url('setup/pip/$', apis.setupPip, name='api_setup_pip'),
+    #
+    # url('pip/$', apis.pip, name='api_pip'),
 
     url('setup/sshpass/$', apis.setupSshPass, name='api_setup_sshpass'),
 

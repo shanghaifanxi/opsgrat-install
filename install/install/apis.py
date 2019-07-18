@@ -94,6 +94,7 @@ def check(request):
 
     log = ""
     msg = ""
+    result = ""
     curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))
     fileNameLog = 'opsgrat_setup.log'
     filePathLog = curDir + fileNameLog
@@ -124,7 +125,7 @@ def check(request):
         content = f.read()
         pattern = re.compile(r'(?<=failed=)\d+\.?\d*')
         check_logs = pattern.findall(content)
-    if msg == False and check_logs[0] > 0:
+    if msg == False and check_logs[0] > 0 or msg == False and check_logs == []:
         result = False
     else:
         result = True
@@ -142,9 +143,9 @@ Ansible安装
 @api_view(['POST'])
 def setupAnsible(request):
 
-    command = 'yum install ansible'
+    command = 'pip install ansible'
     subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    res = os.popen("ps -ef|grep ansible | grep yum  | grep -v 'grep'| awk '{print $2}'")
+    res = os.popen("ps -ef|grep ansible | grep pip  | grep -v 'grep'| awk '{print $2}'")
     pid = res.read()
 
     curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))
@@ -187,57 +188,6 @@ def ansible(request):
     return response
 
 
-"""
-PIP安装
-"""
-
-@transaction.atomic()
-@api_view(['POST'])
-def setupPip(request):
-    command = 'yum install pip'
-    subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    res = os.popen("ps -ef|grep yum | grep pip| grep -v 'grep'| awk '{print $2}'")
-    pid = res.read()
-
-    curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))
-    CheckPipName = "check_pip.txt"
-    PathCheckPip = curDir + CheckPipName
-    with open(PathCheckPip, 'wb') as pc:
-            pc.write(str(pid))
-
-    response = Response({"success": True, "msg": 'succ', "pid": pid})
-    response.content_type = "text/html;charset=utf-8"
-
-    return response
-
-
-@transaction.atomic()
-@api_view(['GET'])
-def pip(request):
-
-    result = ""
-    curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))
-    CheckPipName = "check_pip.txt"
-    PathCheckPip = curDir + CheckPipName
-    if os.path.exists(PathCheckPip):
-        with open(PathCheckPip, 'r') as cf:
-            checks = cf.readlines()
-
-            try:
-                for check in checks:
-                    if psutil.Process(int(check)).is_running() == True:
-                        result = True
-                        break
-            except:
-                result = False
-
-    if result == False and os.path.exists(PathCheckPip):
-        os.remove(PathCheckPip)
-    response = Response({"success": True, "msg": 'succ', "result": result})
-    response.content_type = "text/html;charset=utf-8"
-
-    return response
-
 
 """
 SSHPASS安装
@@ -246,9 +196,9 @@ SSHPASS安装
 @api_view(['POST'])
 def setupSshPass(request):
 
-    command = 'yum install sshpass'
+    command = 'pip install sshpass'
     subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    res = os.popen("ps -ef|grep yum | grep sshpass| grep -v 'grep'| awk '{print $2}'")
+    res = os.popen("ps -ef|grep pip | grep sshpass| grep -v 'grep'| awk '{print $2}'")
     pid = res.read()
 
     curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))
