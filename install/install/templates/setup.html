@@ -60,8 +60,7 @@
             {% if pip %}
               <tr><td>pip</td><td></td><td><span class="glyphicon glyphicon-ok"></span></td></tr>
             {% else %}
-            <tr><td>pip</td><td></td><td><span class="glyphicon glyphicon-remove"></span>
-            &nbsp;&nbsp;&nbsp;&nbsp;<button  type="button" id = "pip">安装</button></td></tr>
+                <tr><td>pip</td><td></td><td><span class="glyphicon glyphicon-remove"></span></td></tr>
             {% endif %}
 
             {% if sshpass %}
@@ -364,8 +363,7 @@ function getScriptResult(isInit) {
             $("#prevButton").show();
              $("#stopButton").hide();
              $("#log").html(html_logs);
-        }
-            else {
+        } else {
             var web_log = data.log;
             var log = web_log.replace('\n', '<br/>');
             var html_log = '<i id="spinner" class="fa fa-spinner fa-spin">' + log + '</i>';
@@ -634,43 +632,6 @@ $("#ansible").on("click", function (e) {
     })
 });
 
-
-//安装pip,并进行进程查询，若进程停止，则停止刷新页面返回数据结果
-var interval_pip = null;
-function getPipResult(isInit) {
-
-    $.getJSON('{% url "api_pip" %}', {format: "json"}, function(data) {
-        if (data.result == false){
-            window.clearInterval(interval_pip);
-            alert('pip安装成功！')
-        }
-
-    })
-}
-
-$("#pip").on("click", function (e) {
-    $.ajax({
-        type:"post",
-        url:"{% url 'api_setup_pip' %}?format=json",
-        success:function (data) {
-           $.ajax({
-               type:"get",
-               url:"{% url 'api_pip' %}?format=json",
-           });
-           getPipResult(true);
-           interval_pip = setInterval("getPipResult(false)", 2*1000);
-        },
-        error: function(data) {
-            var content = data.responseText;
-            try {
-                var json = $.parseJSON(data.responseText);
-                if(typeof json.detail != 'undefined') content = json.detail;
-            } catch (e) {
-                content = "服务端错误"
-            }
-        }
-    })
-});
 
 
 //安装sshpass,并进行进程查询，若进程停止，则停止刷新页面返回数据结果
