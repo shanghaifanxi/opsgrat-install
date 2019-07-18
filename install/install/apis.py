@@ -123,9 +123,9 @@ def check(request):
 
     with open(filePathLog, 'r') as f:
         content = f.read()
-        pattern = re.compile(r'(?<=failed=)\d+\.?\d*')
-        check_logs = pattern.findall(content)
-    if msg == False and check_logs[0] > 0 or msg == False and check_logs == []:
+    pattern = re.compile(r'(?<=failed=)\d+\.?\d*')
+    check_logs = pattern.findall(content)
+    if msg == False and check_logs[0] > 0:
         result = False
     else:
         result = True
