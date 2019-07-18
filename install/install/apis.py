@@ -146,7 +146,7 @@ def setupAnsible(request):
 
     command = 'pip install ansible'
     subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    res = os.popen("ps -ef|grep ansible | grep yum  | grep -v 'grep'| awk '{print $2}'")
+    res = os.popen("ps -ef|grep ansible | grep pip  | grep -v 'grep'| awk '{print $2}'")
     pid = res.read()
 
     curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))
@@ -199,7 +199,7 @@ def setupSshPass(request):
 
     command = 'pip install sshpass'
     subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    res = os.popen("ps -ef|grep yum | grep sshpass| grep -v 'grep'| awk '{print $2}'")
+    res = os.popen("ps -ef|grep pip | grep sshpass| grep -v 'grep'| awk '{print $2}'")
     pid = res.read()
 
     curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))

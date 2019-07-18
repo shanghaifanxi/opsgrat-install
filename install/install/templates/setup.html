@@ -602,7 +602,8 @@ function getAnsibleResult(isInit) {
     $.getJSON('{% url "api_ansible" %}', {format: "json"}, function(data) {
         if (data.result == false){
             window.clearInterval(interval_ansible);
-            alert('ansible安装成功！')
+            {#alert('ansible安装成功！')#}
+            window.location.reload()
         }
 
     })
@@ -641,7 +642,8 @@ function getSshPassResult(isInit) {
     $.getJSON('{% url "api_sshpass" %}', {format: "json"}, function(data) {
         if (data.result == false){
             window.clearInterval(interval_sshpass);
-            alert('sshpass安装成功！')
+            {#alert('sshpass安装成功！');#}
+            window.location.reload()
         }
 
     })
