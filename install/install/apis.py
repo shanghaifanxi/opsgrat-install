@@ -126,6 +126,8 @@ def check(request):
         check_logs = pattern.findall(content)
     if msg == False and check_logs[0] > 0:
         result = False
+    elif msg == False and check_logs == []:
+        result = 'null'
     else:
         result = True
 

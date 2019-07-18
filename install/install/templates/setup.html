@@ -334,12 +334,12 @@ function getScriptResult(isInit) {
 
     $.getJSON('{% url "api_check" %}', {format: "json"}, function(data) {
 
-        if(data.is_running == false && data.result != false) {
-            var web_logs = data.log;
-            var logs = web_logs.replace('\n', '<br/>');
-            var html_logs = '<i id="spinner" class="fa fa-spinner fa-spin">' + logs + '</i>';
+        if(data.is_running == false && data.result == true ) {
+            var web_check_log = data.log;
+            var check_log = web_check_log.replace('\n', '<br/>');
+            var html_check_log = '<i id="spinner" class="fa fa-spinner fa-spin">' + check_log + '</i>';
 
-            $("#log").html(html_logs);
+            $("#log").html(html_check_log);
             $("#prevButton").show();
             $("#SubmitButton").show();
             $("#stopButton").hide();
@@ -347,16 +347,25 @@ function getScriptResult(isInit) {
             window.clearInterval(interval_id);
 
         }else if (data.is_running == false && data.result == false){
-            var web_check_log = data.log;
-            var check_log = web_check_log.replace('\n', '<br/>');
-            var html_check_log = '<i id="spinner" class="fa fa-spinner fa-spin">' + check_log + '</i>';
+            var web_check_logs = data.log;
+            var check_logs = web_check_logs.replace('\n', '<br/>');
+            var html_check_logs = '<i id="spinner" class="fa fa-spinner fa-spin">' + check_logs + '</i>';
             $("#reTryButton").show();
             $("#prevButton").show();
              $("#stopButton").hide();
-             $("#log").html(html_check_log);
+             $("#log").html(html_check_logs);
              window.clearInterval(interval_id);
 
-        }else {
+        } else if (data.is_running == false && data.result == null){
+            var web_logs = data.log;
+            var logs = web_logs.replace('\n', '<br/>');
+            var html_logs = '<i id="spinner" class="fa fa-spinner fa-spin">' + logs + '</i>';
+            $("#reTryButton").show();
+            $("#prevButton").show();
+             $("#stopButton").hide();
+             $("#log").html(html_logs);
+        }
+            else {
             var web_log = data.log;
             var log = web_log.replace('\n', '<br/>');
             var html_log = '<i id="spinner" class="fa fa-spinner fa-spin">' + log + '</i>';
