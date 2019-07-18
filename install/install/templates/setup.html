@@ -358,7 +358,7 @@ function getScriptResult(isInit) {
         } else if (data.is_running == false && data.result == null){
             var web_logs = data.log;
             var logs = web_logs.replace('\n', '<br/>');
-            var html_logs = '<i id="spinner" class="fa fa-spinner fa-spin">' + logs + '</i>';
+            var html_logs = + logs  ;
             $("#reTryButton").show();
             $("#prevButton").show();
              $("#stopButton").hide();
