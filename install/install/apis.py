@@ -94,6 +94,7 @@ def check(request):
 
     log = ""
     msg = ""
+    information = ""
     curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))
     fileNameLog = 'opsgrat_setup.log'
     filePathLog = curDir + fileNameLog
@@ -122,10 +123,12 @@ def check(request):
 
     pattern = re.compile(r'(?<=failed=)\d+\.?\d*')
     check_logs = pattern.findall(log)
-    if check_logs[0] == 0:
-        information = True
-    else:
+    try:
+        if check_logs[0] == 0:
+            information = True
+    except:
         information = False
+
 
     response = Response({"success": True, "msg": 'succ', "is_running": msg, "log": log, "information": information})
     response.content_type = "text/html;charset=utf-8"
