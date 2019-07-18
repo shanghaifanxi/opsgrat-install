@@ -125,10 +125,10 @@ def check(request):
         content = f.read()
     pattern = re.compile(r'(?<=failed=)\d+\.?\d*')
     check_logs = pattern.findall(content)
-    if msg == False and check_logs[0] > 0:
-        result = False
-    else:
+    if msg == False and check_logs[0] == 0:
         result = True
+    else:
+        result = False
 
     response = Response({"success": True, "msg": 'succ', "is_running": msg, "log": log, "result": result})
     response.content_type = "text/html;charset=utf-8"
