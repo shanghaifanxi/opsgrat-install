@@ -8,6 +8,9 @@ import yaml,re
 from rest_framework.permissions import AllowAny
 
 
+"""
+安装程序
+"""
 
 @transaction.atomic()
 @api_view(['POST'])
@@ -43,7 +46,7 @@ def setup(request):
 
     data = ['opsgrat_user:' + ' ' + opsgrat_user, 'opsgrat_group:' + ' ' + opsgrat_group, 'install_dir:' + ' ' + install_dir, 'log_dir:' + ' ' + log_dir, 'pid_dir:' + ' ' + pid_dir + '\n',
             'mysql_host:' + ' ' + mysql_host, 'mysql_port:' + ' ' + mysql_port, 'mysql_user:' + ' ' + mysql_user, 'mysql_user_password:' + ' ' + mysql_user_password, 'mysql_opsgrat_db:' + ' ' + mysql_opsgrat_db, 'mysql_sso_db:' + ' ' + mysql_sso_db + '\n',
-            'opsgrat_uwsgi_port:' + ' ' + opsgrat_uwsgi_port, 'opsgrat_nginx_port:' + ' ' + opsgrat_nginx_port, 'sso_nginx_port:' + ' ' + sso_nginx_port, 'sso_uwsgi_port:' + ' ' + sso_uwsgi_port + '\n'
+            'opsgrat_uwsgi_port:' + ' ' + opsgrat_uwsgi_port, 'opsgrat_nginx_port:' + ' ' + opsgrat_nginx_port, 'sso_nginx_port:' + ' ' + sso_nginx_port, 'sso_uwsgi_port:' + ' ' + sso_uwsgi_port + '\n',
             'redis_host:' + ' ' + redis_host, 'redis_port:' + ' ' + redis_port, 'redis_passwd:' + ' ' + redis_passwd + '\n',
             'rabbitmq_host:' + ' ' + rabbitmq_host, 'rabbitmq_port:' + ' '+ rabbitmq_port, 'rabbitmq_user:' + ' ' + rabbitmq_user, 'rabbitmq_passwd:' + ' ' + rabbitmq_passwd
             ]
@@ -59,8 +62,7 @@ def setup(request):
     with open(filePath, "wb") as f:
 
         f.write('\n'.join(data))
-    subp = ""
-    global subp
+
     fileName = 'var.yaml'
     fileNameLog = 'opsgrat_setup.log'
     filePathLog = curDir + fileNameLog
@@ -68,7 +70,7 @@ def setup(request):
     os.path.dirname("{0}".format(settings.BASE_DIR.rstrip("/")))
     os.chdir(os.path.dirname("{0}".format(settings.BASE_DIR.rstrip("/"))))
     command ='nohup ansible-playbook -i local main.yml -e @' + filePath + ' ' + ' > ' + filePathLog + " &"
-    subp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     res = os.popen("ps -ef|grep ansible-playbook | grep var.yaml | grep -v 'grep'| awk '{print $2}'")
     pid = res.read()
 
@@ -81,6 +83,10 @@ def setup(request):
     response.content_type = "text/html;charset=utf-8"
     return response
 
+
+"""
+检查进程
+"""
 
 @transaction.atomic()
 @api_view(['GET'])
@@ -114,29 +120,14 @@ def check(request):
     if msg == False and os.path.exists(filePathCheck):
         os.remove(filePathCheck)
 
-    pattern = re.compile(r'(?<=failed=)\d+\.?\d*')
-    check_logs = pattern.findall(filePathLog)
-    if msg == False and check_logs > 0:
+    with open(filePathLog, 'r') as f:
+        content = f.read()
+        pattern = re.compile(r'(?<=failed=)\d+\.?\d*')
+        check_logs = pattern.findall(content)
+    if msg == False and check_logs[0] > 0:
         result = False
     else:
         result = True
-    # result = ""
-    # pattern = 'failed=0'
-    # log_result = filePathLog
-    #
-    # if os.path.exists(log_result) and os.path.getsize(log_result) != 0:
-    #     match = re.search(pattern, log_result)
-    #
-    #     if match == None:
-    #         result = True
-    #     else:
-    #         result = False
-    #
-    # if os.path.exists(log_result) and result == False:
-    #     try:
-    #         os.remove(log_result)
-    #     except:
-    #         print (None)
 
     response = Response({"success": True, "msg": 'succ', "is_running": msg, "log": log, "result": result})
     response.content_type = "text/html;charset=utf-8"
@@ -144,28 +135,75 @@ def check(request):
     return response
 
 
+"""
+Ansible安装
+"""
 @transaction.atomic()
 @api_view(['POST'])
 def setupAnsible(request):
 
-    command = 'yum install ansible==2.7.8'
-    subp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    command = 'yum install ansible'
+    subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    res = os.popen("ps -ef|grep ansible | grep yum  | grep -v 'grep'| awk '{print $2}'")
+    pid = res.read()
 
-    pid = subp.pid
+    curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))
+    CheckAnsibleName = "check_ansible.txt"
+    PathCheckAnsible = curDir + CheckAnsibleName
+    with open(PathCheckAnsible, 'wb') as pc:
+            pc.write(str(pid))
 
     response = Response({"success": True, "msg": 'succ', "pid": pid})
     response.content_type = "text/html;charset=utf-8"
 
     return response
 
+
+@transaction.atomic()
+@api_view(['GET'])
+def ansible(request):
+
+    result = ""
+    curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))
+    CheckAnsibleName = "check_ansible.txt"
+    PathCheckAnsible = curDir + CheckAnsibleName
+    if os.path.exists(PathCheckAnsible):
+        with open(PathCheckAnsible, 'r') as cf:
+            checks = cf.readlines()
+
+            try:
+                for check in checks:
+                    if psutil.Process(int(check)).is_running() == True:
+                        result = True
+                        break
+            except:
+                result = False
+
+    if result == False and os.path.exists(PathCheckAnsible):
+        os.remove(PathCheckAnsible)
+    response = Response({"success": True, "msg": 'succ', "result": result})
+    response.content_type = "text/html;charset=utf-8"
+
+    return response
+
+
+"""
+PIP安装
+"""
 
 @transaction.atomic()
 @api_view(['POST'])
 def setupPip(request):
     command = 'yum install pip'
-    subp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    res = os.popen("ps -ef|grep yum | grep pip| grep -v 'grep'| awk '{print $2}'")
+    pid = res.read()
 
-    pid = subp.pid
+    curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))
+    CheckPipName = "check_pip.txt"
+    PathCheckPip = curDir + CheckPipName
+    with open(PathCheckPip, 'wb') as pc:
+            pc.write(str(pid))
 
     response = Response({"success": True, "msg": 'succ', "pid": pid})
     response.content_type = "text/html;charset=utf-8"
@@ -174,19 +212,88 @@ def setupPip(request):
 
 
 @transaction.atomic()
+@api_view(['GET'])
+def pip(request):
+
+    result = ""
+    curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))
+    CheckPipName = "check_pip.txt"
+    PathCheckPip = curDir + CheckPipName
+    if os.path.exists(PathCheckPip):
+        with open(PathCheckPip, 'r') as cf:
+            checks = cf.readlines()
+
+            try:
+                for check in checks:
+                    if psutil.Process(int(check)).is_running() == True:
+                        result = True
+                        break
+            except:
+                result = False
+
+    if result == False and os.path.exists(PathCheckPip):
+        os.remove(PathCheckPip)
+    response = Response({"success": True, "msg": 'succ', "result": result})
+    response.content_type = "text/html;charset=utf-8"
+
+    return response
+
+
+"""
+SSHPASS安装
+"""
+@transaction.atomic()
 @api_view(['POST'])
 def setupSshPass(request):
 
     command = 'yum install sshpass'
-    subp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    res = os.popen("ps -ef|grep yum | grep sshpass| grep -v 'grep'| awk '{print $2}'")
+    pid = res.read()
 
-    pid = subp.pid
+    curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))
+    CheckSshPassName = "check_sshpass.txt"
+    PathCheckSshPass = curDir + CheckSshPassName
+    with open(PathCheckSshPass, 'wb') as pc:
+            pc.write(str(pid))
 
     response = Response({"success": True, "msg": 'succ', "pid": pid})
     response.content_type = "text/html;charset=utf-8"
 
     return response
 
+
+@transaction.atomic()
+@api_view(['GET'])
+def sshpass(request):
+
+    result = ""
+    curDir = "{0}/".format(settings.BASE_DIR.rstrip("/"))
+    CheckSshPassName = "check_sshpass.txt"
+    PathCheckSshPass = curDir + CheckSshPassName
+    if os.path.exists(PathCheckSshPass):
+        with open(PathCheckSshPass, 'r') as cf:
+            checks = cf.readlines()
+
+            try:
+                for check in checks:
+                    if psutil.Process(int(check)).is_running() == True:
+                        result = True
+                        break
+            except:
+                result = False
+
+    if result == False and os.path.exists(PathCheckSshPass):
+        os.remove(PathCheckSshPass)
+    response = Response({"success": True, "msg": 'succ', "result": result})
+    response.content_type = "text/html;charset=utf-8"
+
+    return response
+
+
+"""
+停止安装
+"""
 
 @transaction.atomic()
 @api_view(['POST'])
@@ -196,9 +303,7 @@ def stopPid(request):
     pids = res.readlines()
     for pid in pids:
         command = 'kill -9' + ' ' + pid
-        subp = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-
-        print (subp.pid)
+        subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     response = Response({"success": True, "msg": 'succ', "pid": pids})
     response.content_type = "text/html;charset=utf-8"

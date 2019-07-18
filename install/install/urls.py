@@ -18,7 +18,7 @@ from install import views
 
 urlpatterns = [
 
-    url(r'^', views.SetupView.as_view(), name="setup_view"),
+    url(r'^$', views.SetupView.as_view(), name="setup_view"),
 
     # url(r'', views.SetupIndex, name="index"),
 
